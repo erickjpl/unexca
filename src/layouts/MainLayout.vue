@@ -15,6 +15,20 @@
           Quasar App
         </q-toolbar-title>
 
+        <q-toolbar-title>
+          <q-select
+            v-model="lang"
+            :options="langOptions"
+            label="Quasar Language"
+            dense
+            borderless
+            emit-value
+            map-options
+            options-dense
+            style="min-width: 150px"
+          />
+        </q-toolbar-title>
+
         <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
@@ -30,7 +44,7 @@
           header
           class="text-grey-8"
         >
-          Essential Links
+          UNEXCA
         </q-item-label>
         <EssentialLink
           v-for="link in essentialLinks"
@@ -48,61 +62,59 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink'
+import Quasar from 'quasar'
 
 export default {
   name: 'MainLayout',
-
   components: {
     EssentialLink
   },
-
   data () {
     return {
+      lang: this.$i18n.locale,
+      langOptions: [
+        { value: 'en-us', label: 'English' },
+        { value: 'es', label: 'Español' }
+      ],
       leftDrawerOpen: false,
       essentialLinks: [
         {
-          title: 'Docs',
-          caption: 'quasar.dev',
+          title: 'menu.home',
+          caption: 'menu.caption.home',
           icon: 'school',
-          link: 'https://quasar.dev'
+          link: 'index'
         },
         {
-          title: 'Github',
-          caption: 'github.com/quasarframework',
-          icon: 'code',
-          link: 'https://github.com/quasarframework'
+          title: 'menu.about',
+          caption: 'menu.caption.about',
+          icon: 'school',
+          link: 'about'
         },
         {
-          title: 'Discord Chat Channel',
-          caption: 'chat.quasar.dev',
-          icon: 'chat',
-          link: 'https://chat.quasar.dev'
+          title: 'menu.dashboard',
+          caption: 'menu.caption.dashboard',
+          icon: 'school',
+          link: 'dashboard.index'
         },
         {
-          title: 'Forum',
-          caption: 'forum.quasar.dev',
-          icon: 'record_voice_over',
-          link: 'https://forum.quasar.dev'
+          title: 'menu.login',
+          caption: 'menu.caption.login',
+          icon: 'school',
+          link: 'login'
         },
         {
-          title: 'Twitter',
-          caption: '@quasarframework',
-          icon: 'rss_feed',
-          link: 'https://twitter.quasar.dev'
-        },
-        {
-          title: 'Facebook',
-          caption: '@QuasarFramework',
-          icon: 'public',
-          link: 'https://facebook.quasar.dev'
-        },
-        {
-          title: 'Quasar Awesome',
-          caption: 'Community Quasar projects',
-          icon: 'favorite',
-          link: 'https://awesome.quasar.dev'
+          title: 'menu.register',
+          caption: 'menu.caption.register',
+          icon: 'school',
+          link: 'register'
         }
       ]
+    }
+  },
+  watch: {
+    lang(lang) {
+      this.$i18n.locale = lang
+      import(`quasar/lang/${lang}`).then(language => { this.$q.lang.set(language.default) })
     }
   }
 }
