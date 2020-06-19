@@ -1,7 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 // import example from './module-example'
+import state from './default/state'
+import * as getters from './default/getters'
+import * as mutations from './default/mutations'
+import * as actions from './default/actions'
+
+// Modules
 import profile from './profile'
 
 Vue.use(Vuex)
@@ -17,6 +24,11 @@ Vue.use(Vuex)
 
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
+    getters,
+    mutations,
+    actions,
+    state,
+
     modules: {
       // example
       profile
@@ -24,7 +36,8 @@ export default function (/* { ssrContext } */) {
 
     // enable strict mode (adds overhead!)
     // for dev mode only
-    strict: process.env.DEV
+    strict: process.env.DEV,
+    plugins: [createPersistedState()]
   })
 
   return Store

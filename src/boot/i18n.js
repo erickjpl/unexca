@@ -1,12 +1,15 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import { messages, numberFormats } from 'src/i18n'
+import { Quasar } from 'quasar'
 
 Vue.use(VueI18n)
 
+const defaultLocale = Quasar.lang.isoName
+
 const i18n = new VueI18n({
-  locale: 'en-us',
-  fallbackLocale: 'en-us',
+  locale: defaultLocale,
+  fallbackLocale: defaultLocale,
   messages,
   numberFormats
 })

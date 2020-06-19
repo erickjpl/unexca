@@ -6,6 +6,7 @@ const routes = [
     children: [
       { path: '', name: 'index', component: () => import('pages/Index.vue') },
       { path: 'about', name: 'about', component: () => import('pages/About.vue') },
+      { path: 'register', name: 'register', component: () => import('pages/auth/Register.vue') }
     ]
   },
   {
@@ -13,7 +14,6 @@ const routes = [
     component: () => import('layouts/AuthLayout.vue'),
     children: [
       { path: 'login', name: 'login', component: () => import('pages/auth/Login.vue') },
-      { path: 'register', name: 'register', component: () => import('pages/auth/Register.vue') }
     ]
   },
   {

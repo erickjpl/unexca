@@ -1,5 +1,6 @@
 // This is just an example,
 // so you can safely delete all default props below
+import es from "vee-validate/dist/locale/es"
 
 export default {
 	failed: 'Accion fallida',
@@ -22,4 +23,14 @@ export default {
 			register: 'Registrarse en el sistema',
 		}
   	},
+
+	fields: {
+		email: 'Correo electrónico',
+		password: 'Contraseña',
+		confirmation: 'Confirmar contraseña',
+		subject: 'Llena',
+		drinks: 'Bebidas'
+	},
+
+	validation: es.messages
 }

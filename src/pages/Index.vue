@@ -13,7 +13,7 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'PageIndex',
   created() {
-  	//this.getAllUsers()
+  	this.getAllUsers()
   },
   computed: {
 	  ...mapGetters('profile', ['users'])

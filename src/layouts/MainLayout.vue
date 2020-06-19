@@ -12,13 +12,13 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          <a tabindex="0" type="button" href="/" role="link" class="q-btn q-btn-item non-selectable no-outline quasar-logo text-bold q-btn--flat q-btn--rectangle q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase no-border-radius self-stretch q-btn--active"><span class="q-focus-helper"></span><span class="q-btn__wrapper col row q-anchor--skip"><span class="q-btn__content text-center col items-center q-anchor--skip justify-center row no-wrap text-no-wrap"><div class="q-avatar doc-layout-avatar"><div class="q-avatar__content row flex-center overflow-hidden"><img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg"></div></div><div class="q-toolbar__title ellipsis col-shrink">Quasar</div></span></span></a>
         </q-toolbar-title>
 
         <q-toolbar-title>
           <q-select
             v-model="lang"
-            :options="langOptions"
+            :options="languages"
             label="Quasar Language"
             dense
             borderless
@@ -62,7 +62,7 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink'
-import Quasar from 'quasar'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'MainLayout',
@@ -71,11 +71,7 @@ export default {
   },
   data () {
     return {
-      lang: this.$i18n.locale,
-      langOptions: [
-        { value: 'en-us', label: 'English' },
-        { value: 'es', label: 'Español' }
-      ],
+      lang: '',
       leftDrawerOpen: false,
       essentialLinks: [
         {
@@ -111,11 +107,32 @@ export default {
       ]
     }
   },
+  created() {
+    this.lang = this.currentLanguage
+  },
+  computed: {
+    ...mapGetters(['currentLanguage', 'languages'])
+  },
   watch: {
     lang(lang) {
       this.$i18n.locale = lang
-      import(`quasar/lang/${lang}`).then(language => { this.$q.lang.set(language.default) })
+      // import(`quasar/lang/${lang}`).then(language => { this.$q.lang.set(language.default) })
+      import(`quasar/lang/${lang}`).then(({ default: messages }) => { this.$q.lang.set(messages) })
+      this.SET_LANGUAGE(lang)
+    },
+    /* Otra forma
+    setLocale (locale) {
+      import(`quasar/lang/${locale}`).then(({ default: messages }) => { this.$q.lang.set(messages) })
+
+      import(`src/i18n/${locale}`).then(({ default: messages}) => {
+        this.$i18n.locale = locale
+        this.$i18n.setLocaleMessage(locale, messages)
+      })
     }
+    */
+  },
+  methods: {
+    ...mapMutations(['SET_LANGUAGE'])  
   }
 }
 </script>
