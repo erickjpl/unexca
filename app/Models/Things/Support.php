@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models\Config;
+namespace App\Models\Things;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Image extends Model
+class Support extends Model
 {
-    public $table = 'images';
+    public $table = 'supports';
     
     /**
      * Indicates if the model should be timestamped.
@@ -24,8 +24,8 @@ class Image extends Model
         'path',
         'size',
         'type',
-        'imageable_id',
-        'imageable_type',
+        'supportable_id',
+        'supportable_type'
     ];
 
     /**
@@ -37,14 +37,14 @@ class Image extends Model
         'path' => 'string',
         'size' => 'string',
         'type' => 'string',
-        'imageable_id' => 'integer',
-        'imageable_type' => 'string',
+        'supportable_id' => 'integer',
+        'supportable_type' => 'string',
     ];
 
     /**
-     * Get the owning imageable model.
+     * Get the owning supportable model.
      */
-    public function imageable()
+    public function supportable()
     {
         return $this->morphTo();
     }
