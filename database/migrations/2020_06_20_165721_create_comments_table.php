@@ -17,7 +17,9 @@ class CreateCommentsTable extends Migration
             $table->id();
             $table->string('comment');
             $table->morphs('commentable');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

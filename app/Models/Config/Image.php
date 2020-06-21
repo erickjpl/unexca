@@ -6,7 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Image extends Model
 {
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     public $table = 'images';
+
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
     
     /**
      * Indicates if the model should be timestamped.
@@ -47,5 +59,13 @@ class Image extends Model
     public function imageable()
     {
         return $this->morphTo();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     */
+    public function audit()
+    {
+        return $this->morphMany(\App\Models\Config\Audit::class, 'actionable');
     }
 }

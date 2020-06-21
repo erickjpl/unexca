@@ -6,7 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Support extends Model
 {
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     public $table = 'supports';
+
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
     
     /**
      * Indicates if the model should be timestamped.
@@ -47,5 +59,13 @@ class Support extends Model
     public function supportable()
     {
         return $this->morphTo();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     */
+    public function audit()
+    {
+        return $this->morphMany(\App\Models\Config\Audit::class, 'actionable');
     }
 }

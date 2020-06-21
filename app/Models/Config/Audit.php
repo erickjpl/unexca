@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Models\Things;
+namespace App\Models\Config;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Model
+class Audit extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    public $table = 'comments';
+    public $table = 'audits';
 
     /**
      * The primary key associated with the table.
@@ -33,10 +33,13 @@ class Comment extends Model
      * @var array
      */
     public $fillable = [
-        'comment',
+        'type',
+        'old',
+        'new',
         'user_id',
-        'commentable_id',
-        'commentable_type'
+        'actionable_id',
+        'actionable_type',
+        'create_at',
     ];
 
     /**
@@ -45,16 +48,19 @@ class Comment extends Model
      * @var array
      */
     protected $casts = [
-        'comment' => 'string',
+        'type' => 'string',
+        'old' => 'string',
+        'new' => 'string',
         'user_id' => 'integer',
-        'commentable_id' => 'integer',
-        'commentable_type' => 'string',
+        'create_at' => 'date:Y-m-d',
+        'actionable_id' => 'integer',
+        'actionable_type' => 'string',
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * Get the owning actionable model.
      */
-    public function commentable()
+    public function actionable()
     {
         return $this->morphTo();
     }
@@ -65,13 +71,5 @@ class Comment extends Model
     public function user()
     {
         return $this->belongsTo(\App\Models\Profile\User::class, 'user_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
-     */
-    public function audits()
-    {
-        return $this->morphMany(\App\Models\Config\Audit::class, 'actionable');
     }
 }

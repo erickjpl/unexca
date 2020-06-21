@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Evaluate;
+namespace App\Models\Profile;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Evaluation extends Model
+class RelativeStudent extends Model
 {
     use SoftDeletes;
 
@@ -19,7 +19,7 @@ class Evaluation extends Model
      *
      * @var string
      */
-    public $table = 'evaluations';
+    public $table = 'parents';
 
     /**
      * The primary key associated with the table.
@@ -48,10 +48,9 @@ class Evaluation extends Model
      * @var array
      */
     public $fillable = [
-        'file',
-        'rating',
+        'family_relationship',
         'student_id',
-        'partial_id',
+        'user_id'
     ];
 
     /**
@@ -60,10 +59,9 @@ class Evaluation extends Model
      * @var array
      */
     protected $casts = [
-        'file' => 'string',
-        'rating' => 'string',
+        'family_relationship' => 'string',
         'student_id' => 'integer',
-        'partial_id' => 'integer',
+        'user_id' => 'integer',
     ];
 
     /**
@@ -79,17 +77,17 @@ class Evaluation extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function student()
+    public function user()
     {
-        return $this->belongsTo(\App\Models\Profile\Student::class, 'student_id');
+        return $this->belongsTo(\App\Models\Profile\User::class, 'user_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function evaluationDetails()
+    public function student()
     {
-        return $this->hasMany(\App\Models\Evaluate\EvaluationDetail::class, 'evaluation_id');
+        return $this->belongsTo(\App\Models\Profile\Student::class, 'student_id');
     }
 
     /**

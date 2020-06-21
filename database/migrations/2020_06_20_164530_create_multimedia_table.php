@@ -20,9 +20,9 @@ class CreateMultimediaTable extends Migration
             $table->string('path');
             $table->string('size');
             $table->string('type')->comment('Type of file');
-            $table->foreignId('temary_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('topic_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-
+            $table->softDeletes();
         });
     }
 

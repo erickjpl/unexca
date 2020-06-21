@@ -15,10 +15,11 @@ class CreateEvaluationDetailsTable extends Migration
     {
         Schema::create('evaluation_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('question_id')->constrained()->cascadeOnDelete();
+            $table->tinyInteger('is_valid')->comment('0 = FALSE, 1 = TRUE');
             $table->foreignId('answer_id')->constrained()->cascadeOnDelete();
             $table->foreignId('evaluation_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

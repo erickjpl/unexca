@@ -18,4 +18,12 @@ class School extends Model
 		'creation_date',
 		'address'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     */
+    public function audit()
+    {
+        return $this->morphMany(\App\Models\Config\Audit::class, 'actionable');
+    }
 }

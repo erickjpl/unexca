@@ -20,8 +20,9 @@ class CreatePartialsTable extends Migration
             $table->tinyInteger('opportunities')->default(0)->comment('0 equals free');
             $table->tinyInteger('attempt')->nullable();
             $table->time('attempt_time', 0)->nullable();
-            $table->foreignId('temary_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('topic_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

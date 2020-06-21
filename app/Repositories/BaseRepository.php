@@ -4,10 +4,12 @@ namespace App\Repositories;
 
 use Illuminate\Container\Container as Application;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Repositories\Traits\AuditTrait;
 
 abstract class BaseRepository
 {
+    use AuditTrait;
+
     /**
      * @var Model
      */
@@ -75,9 +77,11 @@ abstract class BaseRepository
      * @param array $columns
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function paginate($perPage, $columns = ['*'])
+    public function paginate($perPage, $search = [], $relation = [], $columns = ['*'])
     {
-        $query = $this->allQuery();
+        $query = $this->allQuery($search, $relation);
+
+        $this->audit('read', 'read paginated data', 'read paginated data');
 
         return $query->paginate($perPage, $columns);
     }
@@ -144,6 +148,8 @@ abstract class BaseRepository
     public function all($search = [], $relation = [], $skip = null, $limit = null, $columns = ['*'])
     {
         $query = $this->allQuery($search, $relation, $skip, $limit);
+
+        $this->audit('read', 'read data', 'read data');
 
         return $query->get($columns);
     }

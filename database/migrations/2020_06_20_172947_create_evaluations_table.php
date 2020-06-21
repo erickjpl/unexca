@@ -17,9 +17,10 @@ class CreateEvaluationsTable extends Migration
             $table->id();
             $table->string('file');
             $table->string('rating');
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('student_id')->constrained()->cascadeOnDelete();
             $table->foreignId('partial_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -21,6 +21,7 @@ class CreateTopicsTable extends Migration
             $table->date('end');
             $table->foreignId('classroom_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -26,11 +26,18 @@ class ProfileController extends Controller
     public function index(Request $request)
     {
         try {
+            /*
             $users = $this->userRepository->all(
                 $request->except(['skip', 'limit']),
                 $request->except(['skip', 'limit']),
                 $request->get('skip'),
                 $request->get('limit')
+            );
+            */
+            $users = $this->userRepository->paginate(
+                $request->get('perPage'),
+                $request->except(['skip', 'limit']),
+                $request->except(['skip', 'limit'])
             );
 
             if ( ! empty($users) ) 

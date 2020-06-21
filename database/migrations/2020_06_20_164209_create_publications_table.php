@@ -17,8 +17,9 @@ class CreatePublicationsTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
-            $table->foreignId('temary_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('topic_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

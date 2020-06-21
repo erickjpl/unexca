@@ -19,6 +19,7 @@ class CreateQuestionsTable extends Migration
             $table->string('answer_code');
             $table->foreignId('partial_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
