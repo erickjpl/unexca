@@ -15,9 +15,11 @@ class CreateAuditsTable extends Migration
     {
         Schema::create('audits', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['create', 'read', 'update', 'delete']);
-            $table->string('old');
-            $table->string('new');
+            $table->enum('type', ['save', 'create', 'read', 'update', 'delete', 'restore', 'login']);
+            $table->string('ip');
+            $table->string('user');
+            $table->json('old');
+            $table->json('new');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->morphs('actionable');
             $table->timestamp('create_at')->useCurrent();

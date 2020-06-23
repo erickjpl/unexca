@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Observers\Profile;
+namespace App\Observers\School;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\Profile\Student;
+use App\Models\Shool\Period;
 use App\Models\Profile\User;
 
-class StudentObserver
-{    
+class PeriodObserver
+{
     /**
-     * Handle the app models profile student "created" event.
+     * Handle the period "created" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Shool\Period  $period
      * @return void
      */
-    public function created(Student $student)
+    public function created(Period $period)
     {
         try {
             $auth = \Auth::id() ?? User::findOrFail(1);
 
             DB::beginTransaction();
-                $student->audits()->create([
+                $period->audits()->create([
                     'type' => 'create',
                     'ip' => request()->ip(),
                     'user' => $auth->nickname,
                     'old' => '{}',
-                    'new' => $student->toJson(),
+                    'new' => $period->toJson(),
                     'user_id' => $auth->id,
                     'create_at' => now(),
                 ]);
@@ -41,45 +41,45 @@ class StudentObserver
     }
 
     /**
-     * Handle the app models profile student "updated" event.
+     * Handle the period "updated" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Shool\Period  $period
      * @return void
      */
-    public function updated(Student $student)
+    public function updated(Period $period)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "deleted" event.
+     * Handle the period "deleted" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Shool\Period  $period
      * @return void
      */
-    public function deleted(Student $student)
+    public function deleted(Period $period)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "restored" event.
+     * Handle the period "restored" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Shool\Period  $period
      * @return void
      */
-    public function restored(Student $student)
+    public function restored(Period $period)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "force deleted" event.
+     * Handle the period "force deleted" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Shool\Period  $period
      * @return void
      */
-    public function forceDeleted(Student $student)
+    public function forceDeleted(Period $period)
     {
         //
     }

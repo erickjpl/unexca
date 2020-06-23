@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Observers\Profile;
+namespace App\Observers\Evaluate;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\Profile\RelativeStudent;
+use App\Models\Evaluate\Answer;
 use App\Models\Profile\User;
 
-class RelativeStudentObserver
-{    
+class AnswerObserver
+{
     /**
-     * Handle the relativeStudent "created" event.
+     * Handle the answer "created" event.
      *
-     * @param  \App\Models\Profile\RelativeStudent  $relativeStudent
+     * @param  \App\Models\Evaluate\Answer  $answer
      * @return void
      */
-    public function created(RelativeStudent $relativeStudent)
+    public function created(Answer $answer)
     {
         try {
             $auth = \Auth::id() ?? User::findOrFail(1);
@@ -41,45 +41,45 @@ class RelativeStudentObserver
     }
 
     /**
-     * Handle the relativeStudent "updated" event.
+     * Handle the answer "updated" event.
      *
-     * @param  \App\Models\Profile\RelativeStudent  $relativeStudent
+     * @param  \App\Models\Evaluate\Answer  $answer
      * @return void
      */
-    public function updated(RelativeStudent $relativeStudent)
+    public function updated(Answer $answer)
     {
         //
     }
 
     /**
-     * Handle the relativeStudent "deleted" event.
+     * Handle the answer "deleted" event.
      *
-     * @param  \App\Models\Profile\RelativeStudent  $relativeStudent
+     * @param  \App\Models\Evaluate\Answer  $answer
      * @return void
      */
-    public function deleted(RelativeStudent $relativeStudent)
+    public function deleted(Answer $answer)
     {
         //
     }
 
     /**
-     * Handle the relativeStudent "restored" event.
+     * Handle the answer "restored" event.
      *
-     * @param  \App\Models\Profile\RelativeStudent  $relativeStudent
+     * @param  \App\Models\Evaluate\Answer  $answer
      * @return void
      */
-    public function restored(RelativeStudent $relativeStudent)
+    public function restored(Answer $answer)
     {
         //
     }
 
     /**
-     * Handle the relativeStudent "force deleted" event.
+     * Handle the answer "force deleted" event.
      *
-     * @param  \App\Models\Profile\RelativeStudent  $relativeStudent
+     * @param  \App\Models\Evaluate\Answer  $answer
      * @return void
      */
-    public function forceDeleted(RelativeStudent $relativeStudent)
+    public function forceDeleted(Answer $answer)
     {
         //
     }

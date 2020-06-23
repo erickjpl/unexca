@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Observers\Profile;
+namespace App\Observers\Things;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\Profile\Student;
+use App\Models\Things\Support;
 use App\Models\Profile\User;
 
-class StudentObserver
-{    
+class SupportObserver
+{
     /**
-     * Handle the app models profile student "created" event.
+     * Handle the support "created" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Things\Support  $support
      * @return void
      */
-    public function created(Student $student)
+    public function created(Support $support)
     {
         try {
             $auth = \Auth::id() ?? User::findOrFail(1);
 
             DB::beginTransaction();
-                $student->audits()->create([
+                $support->audits()->create([
                     'type' => 'create',
                     'ip' => request()->ip(),
                     'user' => $auth->nickname,
                     'old' => '{}',
-                    'new' => $student->toJson(),
+                    'new' => $support->toJson(),
                     'user_id' => $auth->id,
                     'create_at' => now(),
                 ]);
@@ -41,45 +41,45 @@ class StudentObserver
     }
 
     /**
-     * Handle the app models profile student "updated" event.
+     * Handle the support "updated" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Things\Support  $support
      * @return void
      */
-    public function updated(Student $student)
+    public function updated(Support $support)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "deleted" event.
+     * Handle the support "deleted" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Things\Support  $support
      * @return void
      */
-    public function deleted(Student $student)
+    public function deleted(Support $support)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "restored" event.
+     * Handle the support "restored" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Things\Support  $support
      * @return void
      */
-    public function restored(Student $student)
+    public function restored(Support $support)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "force deleted" event.
+     * Handle the support "force deleted" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Things\Support  $support
      * @return void
      */
-    public function forceDeleted(Student $student)
+    public function forceDeleted(Support $support)
     {
         //
     }

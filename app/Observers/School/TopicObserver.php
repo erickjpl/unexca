@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Observers\Profile;
+namespace App\Observers\School;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\Profile\Student;
+use App\Models\Shool\Topic;
 use App\Models\Profile\User;
 
-class StudentObserver
-{    
+class TopicObserver
+{
     /**
-     * Handle the app models profile student "created" event.
+     * Handle the topic "created" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Shool\Topic  $topic
      * @return void
      */
-    public function created(Student $student)
+    public function created(Topic $topic)
     {
         try {
             $auth = \Auth::id() ?? User::findOrFail(1);
 
             DB::beginTransaction();
-                $student->audits()->create([
+                $topic->audits()->create([
                     'type' => 'create',
                     'ip' => request()->ip(),
                     'user' => $auth->nickname,
                     'old' => '{}',
-                    'new' => $student->toJson(),
+                    'new' => $topic->toJson(),
                     'user_id' => $auth->id,
                     'create_at' => now(),
                 ]);
@@ -41,45 +41,45 @@ class StudentObserver
     }
 
     /**
-     * Handle the app models profile student "updated" event.
+     * Handle the topic "updated" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Shool\Topic  $topic
      * @return void
      */
-    public function updated(Student $student)
+    public function updated(Topic $topic)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "deleted" event.
+     * Handle the topic "deleted" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Shool\Topic  $topic
      * @return void
      */
-    public function deleted(Student $student)
+    public function deleted(Topic $topic)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "restored" event.
+     * Handle the topic "restored" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Shool\Topic  $topic
      * @return void
      */
-    public function restored(Student $student)
+    public function restored(Topic $topic)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "force deleted" event.
+     * Handle the topic "force deleted" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Shool\Topic  $topic
      * @return void
      */
-    public function forceDeleted(Student $student)
+    public function forceDeleted(Topic $topic)
     {
         //
     }

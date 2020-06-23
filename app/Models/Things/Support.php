@@ -2,10 +2,13 @@
 
 namespace App\Models\Things;
 
+use App\Models\Traits\AuditTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Support extends Model
 {
+    use AuditTrait;
+
     /**
      * The table associated with the model.
      *

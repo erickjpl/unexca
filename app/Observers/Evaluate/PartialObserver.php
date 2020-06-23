@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Observers\Profile;
+namespace App\Observers\Evaluate;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\Profile\Student;
+use App\Models\Evaluate\Partial;
 use App\Models\Profile\User;
 
-class StudentObserver
-{    
+class PartialObserver
+{
     /**
-     * Handle the app models profile student "created" event.
+     * Handle the partial "created" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Evaluate\Partial  $partial
      * @return void
      */
-    public function created(Student $student)
+    public function created(Partial $partial)
     {
         try {
             $auth = \Auth::id() ?? User::findOrFail(1);
 
             DB::beginTransaction();
-                $student->audits()->create([
+                $partial->audits()->create([
                     'type' => 'create',
                     'ip' => request()->ip(),
                     'user' => $auth->nickname,
                     'old' => '{}',
-                    'new' => $student->toJson(),
+                    'new' => $partial->toJson(),
                     'user_id' => $auth->id,
                     'create_at' => now(),
                 ]);
@@ -41,45 +41,45 @@ class StudentObserver
     }
 
     /**
-     * Handle the app models profile student "updated" event.
+     * Handle the partial "updated" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Evaluate\Partial  $partial
      * @return void
      */
-    public function updated(Student $student)
+    public function updated(Partial $partial)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "deleted" event.
+     * Handle the partial "deleted" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Evaluate\Partial  $partial
      * @return void
      */
-    public function deleted(Student $student)
+    public function deleted(Partial $partial)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "restored" event.
+     * Handle the partial "restored" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Evaluate\Partial  $partial
      * @return void
      */
-    public function restored(Student $student)
+    public function restored(Partial $partial)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "force deleted" event.
+     * Handle the partial "force deleted" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Evaluate\Partial  $partial
      * @return void
      */
-    public function forceDeleted(Student $student)
+    public function forceDeleted(Partial $partial)
     {
         //
     }

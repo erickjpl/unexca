@@ -20,7 +20,7 @@ class CourseSeeder extends Seeder
 
         factory(Course::class, 8)->create()->each(function ($course) use ($teachers, &$index) {
         	$course->period()->save(factory(Period::class)->make());
-        	$course->classroom()->save(factory(Classroom::class)->make([
+        	$course->classrooms()->save(factory(Classroom::class)->make([
         		'status' => 'active',
         		'teacher_id' => $teachers[$index]->id
         	]));

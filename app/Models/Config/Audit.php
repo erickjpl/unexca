@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Audit extends Model
 {
+    protected $dates = ['create_at'];
+
     /**
      * The table associated with the model.
      *
@@ -34,12 +36,14 @@ class Audit extends Model
      */
     public $fillable = [
         'type',
+        'ip',
+        'user',
         'old',
         'new',
         'user_id',
+        'create_at',
         'actionable_id',
         'actionable_type',
-        'create_at',
     ];
 
     /**
@@ -49,10 +53,12 @@ class Audit extends Model
      */
     protected $casts = [
         'type' => 'string',
-        'old' => 'string',
-        'new' => 'string',
+        'ip' => 'string',
+        'user' => 'string',
+        'old' => 'json',
+        'new' => 'json',
         'user_id' => 'integer',
-        'create_at' => 'date:Y-m-d',
+        'create_at' => 'date:Y-m-d H:i:s',
         'actionable_id' => 'integer',
         'actionable_type' => 'string',
     ];

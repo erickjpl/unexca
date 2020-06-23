@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Models\Evaluate\Partials;
+use App\Models\Evaluate\Partial;
 use Faker\Generator as Faker;
 
-$factory->define(Partials::class, function (Faker $faker) {
+$factory->define(Partial::class, function (Faker $faker) {
     return [
         //
     ];

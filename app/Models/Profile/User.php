@@ -2,19 +2,23 @@
 
 namespace App\Models\Profile;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Traits\AuditTrait;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable, SoftDeletes;
+    use AuditTrait, Notifiable, SoftDeletes;
+
+    const MAX_ATTEMPTS = 10;
+    const DECAY_MINUTES = 30;
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
     
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at', 'email_verified_at'];
 
     /**
      * The table associated with the model.
@@ -38,19 +42,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public $timestamps = true;
 
     /**
-     * The storage format of the model's date columns.
-     *
-     * @var string
-     */
-    protected $dateFormat = 'U';
-
-        /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     public $fillable = [
-        'name',
+        'nickname',
         'email',
         'password'
     ];
@@ -61,10 +58,10 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $casts = [
-        'name' => 'string',
+        'nickname' => 'string',
         'email' => 'string',
         'password' => 'string',
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'date:Y-m-d H:i:s',
     ];
 
     /**
@@ -132,13 +129,5 @@ class User extends Authenticatable implements MustVerifyEmail
     public function parents()
     {
         return $this->hasManyThrough(\App\Models\Profile\RelativeStudent::class, \App\Models\Profile\Student::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
-     */
-    public function audits()
-    {
-        return $this->morphMany(\App\Models\Config\Audit::class, 'actionable');
     }
 }

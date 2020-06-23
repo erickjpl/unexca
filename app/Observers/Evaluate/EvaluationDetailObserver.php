@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Observers\Profile;
+namespace App\Observers\Evaluate;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\Profile\RelativeStudent;
+use App\Models\Evaluate\EvaluationDetail;
 use App\Models\Profile\User;
 
-class RelativeStudentObserver
-{    
+class EvaluationDetailObserver
+{
     /**
-     * Handle the relativeStudent "created" event.
+     * Handle the evaluation detail "created" event.
      *
-     * @param  \App\Models\Profile\RelativeStudent  $relativeStudent
+     * @param  \App\Models\Evaluate\EvaluationDetail  $evaluationDetail
      * @return void
      */
-    public function created(RelativeStudent $relativeStudent)
+    public function created(EvaluationDetail $evaluationDetail)
     {
         try {
             $auth = \Auth::id() ?? User::findOrFail(1);
@@ -41,45 +41,45 @@ class RelativeStudentObserver
     }
 
     /**
-     * Handle the relativeStudent "updated" event.
+     * Handle the evaluation detail "updated" event.
      *
-     * @param  \App\Models\Profile\RelativeStudent  $relativeStudent
+     * @param  \App\Models\Evaluate\EvaluationDetail  $evaluationDetail
      * @return void
      */
-    public function updated(RelativeStudent $relativeStudent)
+    public function updated(EvaluationDetail $evaluationDetail)
     {
         //
     }
 
     /**
-     * Handle the relativeStudent "deleted" event.
+     * Handle the evaluation detail "deleted" event.
      *
-     * @param  \App\Models\Profile\RelativeStudent  $relativeStudent
+     * @param  \App\Models\Evaluate\EvaluationDetail  $evaluationDetail
      * @return void
      */
-    public function deleted(RelativeStudent $relativeStudent)
+    public function deleted(EvaluationDetail $evaluationDetail)
     {
         //
     }
 
     /**
-     * Handle the relativeStudent "restored" event.
+     * Handle the evaluation detail "restored" event.
      *
-     * @param  \App\Models\Profile\RelativeStudent  $relativeStudent
+     * @param  \App\Models\Evaluate\EvaluationDetail  $evaluationDetail
      * @return void
      */
-    public function restored(RelativeStudent $relativeStudent)
+    public function restored(EvaluationDetail $evaluationDetail)
     {
         //
     }
 
     /**
-     * Handle the relativeStudent "force deleted" event.
+     * Handle the evaluation detail "force deleted" event.
      *
-     * @param  \App\Models\Profile\RelativeStudent  $relativeStudent
+     * @param  \App\Models\Evaluate\EvaluationDetail  $evaluationDetail
      * @return void
      */
-    public function forceDeleted(RelativeStudent $relativeStudent)
+    public function forceDeleted(EvaluationDetail $evaluationDetail)
     {
         //
     }

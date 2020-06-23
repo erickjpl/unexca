@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Observers\Profile;
+namespace App\Observers\Things;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\Profile\Student;
+use App\Models\Things\Publication;
 use App\Models\Profile\User;
 
-class StudentObserver
-{    
+class PublicationObserver
+{
     /**
-     * Handle the app models profile student "created" event.
+     * Handle the publication "created" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Things\Publication  $publication
      * @return void
      */
-    public function created(Student $student)
+    public function created(Publication $publication)
     {
         try {
             $auth = \Auth::id() ?? User::findOrFail(1);
 
             DB::beginTransaction();
-                $student->audits()->create([
+                $publication->audits()->create([
                     'type' => 'create',
                     'ip' => request()->ip(),
                     'user' => $auth->nickname,
                     'old' => '{}',
-                    'new' => $student->toJson(),
+                    'new' => $publication->toJson(),
                     'user_id' => $auth->id,
                     'create_at' => now(),
                 ]);
@@ -41,45 +41,45 @@ class StudentObserver
     }
 
     /**
-     * Handle the app models profile student "updated" event.
+     * Handle the publication "updated" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Things\Publication  $publication
      * @return void
      */
-    public function updated(Student $student)
+    public function updated(Publication $publication)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "deleted" event.
+     * Handle the publication "deleted" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Things\Publication  $publication
      * @return void
      */
-    public function deleted(Student $student)
+    public function deleted(Publication $publication)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "restored" event.
+     * Handle the publication "restored" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Things\Publication  $publication
      * @return void
      */
-    public function restored(Student $student)
+    public function restored(Publication $publication)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "force deleted" event.
+     * Handle the publication "force deleted" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Things\Publication  $publication
      * @return void
      */
-    public function forceDeleted(Student $student)
+    public function forceDeleted(Publication $publication)
     {
         //
     }

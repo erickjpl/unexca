@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Observers\Profile;
+namespace App\Observers\Evaluate;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\Profile\Student;
+use App\Models\Evaluate\Evaluation;
 use App\Models\Profile\User;
 
-class StudentObserver
-{    
+class EvaluationObserver
+{
     /**
-     * Handle the app models profile student "created" event.
+     * Handle the evaluation "created" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Evaluate\Evaluation  $evaluation
      * @return void
      */
-    public function created(Student $student)
+    public function created(Evaluation $evaluation)
     {
         try {
             $auth = \Auth::id() ?? User::findOrFail(1);
 
             DB::beginTransaction();
-                $student->audits()->create([
+                $evaluation->audits()->create([
                     'type' => 'create',
                     'ip' => request()->ip(),
                     'user' => $auth->nickname,
                     'old' => '{}',
-                    'new' => $student->toJson(),
+                    'new' => $evaluation->toJson(),
                     'user_id' => $auth->id,
                     'create_at' => now(),
                 ]);
@@ -41,45 +41,45 @@ class StudentObserver
     }
 
     /**
-     * Handle the app models profile student "updated" event.
+     * Handle the evaluation "updated" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Evaluate\Evaluation  $evaluation
      * @return void
      */
-    public function updated(Student $student)
+    public function updated(Evaluation $evaluation)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "deleted" event.
+     * Handle the evaluation "deleted" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Evaluate\Evaluation  $evaluation
      * @return void
      */
-    public function deleted(Student $student)
+    public function deleted(Evaluation $evaluation)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "restored" event.
+     * Handle the evaluation "restored" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Evaluate\Evaluation  $evaluation
      * @return void
      */
-    public function restored(Student $student)
+    public function restored(Evaluation $evaluation)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "force deleted" event.
+     * Handle the evaluation "force deleted" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Evaluate\Evaluation  $evaluation
      * @return void
      */
-    public function forceDeleted(Student $student)
+    public function forceDeleted(Evaluation $evaluation)
     {
         //
     }

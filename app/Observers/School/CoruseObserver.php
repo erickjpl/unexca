@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Observers\Profile;
+namespace App\Observers\School;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\Profile\Student;
+use App\Models\Shool\Course;
 use App\Models\Profile\User;
 
-class StudentObserver
-{    
+class CoruseObserver
+{
     /**
-     * Handle the app models profile student "created" event.
+     * Handle the course "created" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Shool\Course  $course
      * @return void
      */
-    public function created(Student $student)
+    public function created(Course $course)
     {
         try {
             $auth = \Auth::id() ?? User::findOrFail(1);
 
             DB::beginTransaction();
-                $student->audits()->create([
+                $course->audits()->create([
                     'type' => 'create',
                     'ip' => request()->ip(),
                     'user' => $auth->nickname,
                     'old' => '{}',
-                    'new' => $student->toJson(),
+                    'new' => $course->toJson(),
                     'user_id' => $auth->id,
                     'create_at' => now(),
                 ]);
@@ -41,45 +41,45 @@ class StudentObserver
     }
 
     /**
-     * Handle the app models profile student "updated" event.
+     * Handle the course "updated" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Shool\Course  $course
      * @return void
      */
-    public function updated(Student $student)
+    public function updated(Course $course)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "deleted" event.
+     * Handle the course "deleted" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Shool\Course  $course
      * @return void
      */
-    public function deleted(Student $student)
+    public function deleted(Course $course)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "restored" event.
+     * Handle the course "restored" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Shool\Course  $course
      * @return void
      */
-    public function restored(Student $student)
+    public function restored(Course $course)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "force deleted" event.
+     * Handle the course "force deleted" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Shool\Course  $course
      * @return void
      */
-    public function forceDeleted(Student $student)
+    public function forceDeleted(Course $course)
     {
         //
     }

@@ -2,10 +2,19 @@
 
 namespace App\Models\Things;
 
+use App\Models\Traits\AuditTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model
 {
+    use AuditTrait, SoftDeletes;
+
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
+    
+    protected $dates = ['deleted_at'];
+
     /**
      * The table associated with the model.
      *
@@ -25,7 +34,7 @@ class Comment extends Model
      *
      * @var bool
      */
-    public $timestamps = false;
+    public $timestamps = true;
 
     /**
      * The attributes that are mass assignable.

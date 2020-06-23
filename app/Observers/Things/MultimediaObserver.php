@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Observers\Profile;
+namespace App\Observers\Things;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\Profile\Student;
+use App\Models\Things\Multimedia;
 use App\Models\Profile\User;
 
-class StudentObserver
-{    
+class MultimediaObserver
+{
     /**
-     * Handle the app models profile student "created" event.
+     * Handle the multimedia "created" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Things\Multimedia  $multimedia
      * @return void
      */
-    public function created(Student $student)
+    public function created(Multimedia $multimedia)
     {
         try {
             $auth = \Auth::id() ?? User::findOrFail(1);
 
             DB::beginTransaction();
-                $student->audits()->create([
+                $multimedia->audits()->create([
                     'type' => 'create',
                     'ip' => request()->ip(),
                     'user' => $auth->nickname,
                     'old' => '{}',
-                    'new' => $student->toJson(),
+                    'new' => $multimedia->toJson(),
                     'user_id' => $auth->id,
                     'create_at' => now(),
                 ]);
@@ -41,45 +41,45 @@ class StudentObserver
     }
 
     /**
-     * Handle the app models profile student "updated" event.
+     * Handle the multimedia "updated" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Things\Multimedia  $multimedia
      * @return void
      */
-    public function updated(Student $student)
+    public function updated(Multimedia $multimedia)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "deleted" event.
+     * Handle the multimedia "deleted" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Things\Multimedia  $multimedia
      * @return void
      */
-    public function deleted(Student $student)
+    public function deleted(Multimedia $multimedia)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "restored" event.
+     * Handle the multimedia "restored" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Things\Multimedia  $multimedia
      * @return void
      */
-    public function restored(Student $student)
+    public function restored(Multimedia $multimedia)
     {
         //
     }
 
     /**
-     * Handle the app models profile student "force deleted" event.
+     * Handle the multimedia "force deleted" event.
      *
-     * @param  App\Models\Profile\Student  $student
+     * @param  \App\Models\Things\Multimedia  $multimedia
      * @return void
      */
-    public function forceDeleted(Student $student)
+    public function forceDeleted(Multimedia $multimedia)
     {
         //
     }

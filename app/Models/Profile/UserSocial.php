@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Models\School;
+namespace App;
 
 use App\Models\Traits\AuditTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Period extends Model
+class UserSocial extends Model
 {
-    use AuditTrait, SoftDeletes;
+    use AuditTrait, Notifiable, SoftDeletes;
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -20,7 +21,7 @@ class Period extends Model
      *
      * @var string
      */
-    public $table = 'periods';
+    public $table = 'user_socials';
 
     /**
      * The primary key associated with the table.
@@ -42,9 +43,9 @@ class Period extends Model
      * @var array
      */
     public $fillable = [
-        'period_year',
-        'grade',
-        'course_id'
+        'user_id',
+        'social_id',
+        'service'
     ];
 
     /**
@@ -53,9 +54,9 @@ class Period extends Model
      * @var array
      */
     protected $casts = [
-        'period_year' => 'date:Y-m',
-        'grade' => 'string',
-        'course_id' => 'integer',
+        'user_id' => 'integer',
+        'social_id' => 'string',
+        'service' => 'string',
     ];
 
     /**
@@ -66,21 +67,13 @@ class Period extends Model
     public function getRouteKeyName()
     {
         return 'id';
-    }   
-    
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     **/
-    public function course()
-    {
-        return $this->belongsTo(\App\Models\School\Course::class, 'course_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function audit()
+    public function user()
     {
-        return $this->morphMany(\App\Models\Config\Audit::class, 'actionable');
+        return $this->hasOne(\App\User::class, 'id', 'user_id');
     }
 }

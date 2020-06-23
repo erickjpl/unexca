@@ -2,10 +2,13 @@
 
 namespace App\Models\School;
 
+use App\Models\Traits\AuditTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class School extends Model
 {
+    use AuditTrait;
+   
     /**
      * The attributes that are mass assignable.
      *

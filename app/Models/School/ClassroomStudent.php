@@ -2,12 +2,13 @@
 
 namespace App\Models\School;
 
+use App\Models\Traits\AuditTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ClassroomStudent extends Model
 {
-    use SoftDeletes;
+    use AuditTrait, SoftDeletes;
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -34,13 +35,6 @@ class ClassroomStudent extends Model
      * @var bool
      */
     public $timestamps = false;
-
-    /**
-     * The storage format of the model's date columns.
-     *
-     * @var string
-     */
-    protected $dateFormat = 'U';
 
         /**
      * The attributes that are mass assignable.
