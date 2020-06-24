@@ -21,7 +21,7 @@ class EvaluationObserver
 
             DB::beginTransaction();
                 $evaluation->audits()->create([
-                    'type' => 'create',
+                    'type' => 'delete',
                     'ip' => request()->ip(),
                     'user' => $auth->nickname,
                     'old' => '{}',
@@ -59,7 +59,28 @@ class EvaluationObserver
      */
     public function deleted(Evaluation $evaluation)
     {
-        //
+        try {
+            $auth = \Auth::id() ?? User::findOrFail(1);
+
+            DB::beginTransaction();
+                $evaluation->audits()->create([
+                    'type' => 'create',
+                    'ip' => request()->ip(),
+                    'user' => $auth->nickname,
+                    'new' => '{}',
+                    'old' => $evaluation->toJson(),
+                    'user_id' => $auth->id,
+                    'create_at' => now(),
+                ]);
+
+            DB::commit();
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException\ModelNotFoundException $e) {
+            DB::rollback();
+            throw $e;
+        } catch (\Throwable $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
 
     /**

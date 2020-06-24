@@ -21,7 +21,7 @@ class PartialObserver
 
             DB::beginTransaction();
                 $partial->audits()->create([
-                    'type' => 'create',
+                    'type' => 'delete',
                     'ip' => request()->ip(),
                     'user' => $auth->nickname,
                     'old' => '{}',
@@ -59,7 +59,28 @@ class PartialObserver
      */
     public function deleted(Partial $partial)
     {
-        //
+        try {
+            $auth = \Auth::id() ?? User::findOrFail(1);
+
+            DB::beginTransaction();
+                $partial->audits()->create([
+                    'type' => 'create',
+                    'ip' => request()->ip(),
+                    'user' => $auth->nickname,
+                    'new' => '{}',
+                    'old' => $partial->toJson(),
+                    'user_id' => $auth->id,
+                    'create_at' => now(),
+                ]);
+
+            DB::commit();
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException\ModelNotFoundException $e) {
+            DB::rollback();
+            throw $e;
+        } catch (\Throwable $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
 
     /**

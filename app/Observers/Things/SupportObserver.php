@@ -59,7 +59,28 @@ class SupportObserver
      */
     public function deleted(Support $support)
     {
-        //
+        try {
+            $auth = \Auth::id() ?? User::findOrFail(1);
+
+            DB::beginTransaction();
+                $support->audits()->create([
+                    'type' => 'delete',
+                    'ip' => request()->ip(),
+                    'user' => $auth->nickname,
+                    'new' => '{}',
+                    'old' => $support->toJson(),
+                    'user_id' => $auth->id,
+                    'create_at' => now(),
+                ]);
+
+            DB::commit();
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException\ModelNotFoundException $e) {
+            DB::rollback();
+            throw $e;
+        } catch (\Throwable $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
 
     /**
