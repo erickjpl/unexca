@@ -61,10 +61,9 @@ class ProfileController extends Controller
         try {
             $repository = $this->userRepo->find($user, $request->except(['skip', 'limit']));
 
-            if ( empty($repository) ) 
-                return response()->json(array('info' => 'Usuario no encontrado.', 'status' => '204'));
-
             return response()->json($repository->toArray(), 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json('El recurso no fue encontrado..!', 404);
         } catch (\App\Exceptions\CustomException $e) {
             throw $e;
         }
@@ -81,6 +80,8 @@ class ProfileController extends Controller
             $repository = $this->userRepo->update($request->all(), $id);
 
             return response()->json($repository->toArray(), 201);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json('El recurso no fue encontrado..!', 404);
         } catch (\App\Exceptions\CustomException $e) {
             throw $e;
         }
@@ -89,7 +90,6 @@ class ProfileController extends Controller
     public function destroy($user)
     {
         try {
-            /** @var User $user */
             $repository = $this->userRepo->find($user);
 
             if ( empty($repository) )
@@ -98,6 +98,8 @@ class ProfileController extends Controller
             $repository->delete();
 
             return response()->json($repository->toArray(), 202);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json('El recurso no fue encontrado..!', 404);
         } catch (\App\Exceptions\CustomException $e) {
             throw $e;
         }

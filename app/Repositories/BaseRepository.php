@@ -76,6 +76,10 @@ abstract class BaseRepository
      * @param int $perPage
      * @param array $columns
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     *
+     * @throws \Illuminate\Database\QueryException
+     * @throws \PDOException
+     * @throws \Exception
      */
     public function paginate($perPage, $search = [], $relation = [], $columns = ['*'])
     {
@@ -85,9 +89,7 @@ abstract class BaseRepository
             $this->audit('read', 'read paginated data', 'read paginated data');
 
             return $query->paginate($perPage, $columns);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
-        } catch (Illuminate\Database\QueryException $e) {
+        } catch (\Illuminate\Database\QueryException $e) {
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
         } catch (\PDOException $e) {
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
@@ -154,6 +156,10 @@ abstract class BaseRepository
      * @param array $columns
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     *
+     * @throws \Illuminate\Database\QueryException
+     * @throws \PDOException
+     * @throws \Exception
      */
     public function all($search = [], $relation = [], $skip = null, $limit = null, $columns = ['*'])
     {
@@ -163,9 +169,7 @@ abstract class BaseRepository
             $this->audit('read', 'read data', 'read data');
 
             return $query->get($columns);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
-        } catch (Illuminate\Database\QueryException $e) {
+        } catch (\Illuminate\Database\QueryException $e) {
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
         } catch (\PDOException $e) {
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
@@ -180,6 +184,11 @@ abstract class BaseRepository
      * @param array $input
      *
      * @return Model
+     *
+     * @throws \Throwable
+     * @throws \Illuminate\Database\QueryException
+     * @throws \PDOException
+     * @throws \Exception
      */
     public function create($input)
     {
@@ -196,16 +205,14 @@ abstract class BaseRepository
         } catch (\Throwable $e) {
             \DB::rollback();
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            \DB::rollback();
-            throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
-        } catch (Illuminate\Database\QueryException $e) {
+        } catch (\Illuminate\Database\QueryException $e) {
             \DB::rollback();
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
         } catch (\PDOException $e) {
             \DB::rollback();
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
         } catch (\Exception $e) {
+            \DB::rollback();
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
         }
     }
@@ -213,10 +220,15 @@ abstract class BaseRepository
     /**
      * Find model record for given id
      *
-     * @param int $id
+     * @param mixed $id
      * @param array $columns
      *
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Model|null
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws \Illuminate\Database\QueryException
+     * @throws \PDOException
+     * @throws \Exception
      */
     public function find($id, $relation = [], $columns = ['*'])
     {
@@ -228,8 +240,8 @@ abstract class BaseRepository
 
             return $query->findOrFail($id, $columns);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
-        } catch (Illuminate\Database\QueryException $e) {
+            throw $e;
+        } catch (\Illuminate\Database\QueryException $e) {
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
         } catch (\PDOException $e) {
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
@@ -245,6 +257,11 @@ abstract class BaseRepository
      * @param array $columns
      *
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Model|null
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws \Illuminate\Database\QueryException
+     * @throws \PDOException
+     * @throws \Exception
      */
     public function first($search = [], $relation = [], $skip = null, $limit = null, $columns = ['*'])
     {
@@ -253,8 +270,8 @@ abstract class BaseRepository
 
             return $query->firstOrFail($columns);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
-        } catch (Illuminate\Database\QueryException $e) {
+            throw $e;
+        } catch (\Illuminate\Database\QueryException $e) {
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
         } catch (\PDOException $e) {
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
@@ -270,6 +287,12 @@ abstract class BaseRepository
      * @param int $id
      *
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Model
+     *
+     * @throws \Throwable
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws \Illuminate\Database\QueryException
+     * @throws \PDOException
+     * @throws \Exception
      */
     public function update($input, $id)
     {
@@ -292,14 +315,15 @@ abstract class BaseRepository
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             \DB::rollback();
-            throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
-        } catch (Illuminate\Database\QueryException $e) {
+            throw $e;
+        } catch (\Illuminate\Database\QueryException $e) {
             \DB::rollback();
             throw $e;
         } catch (\PDOException $e) {
             \DB::rollback();
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
         } catch (\Exception $e) {
+            \DB::rollback();
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
         }
     }
@@ -310,6 +334,12 @@ abstract class BaseRepository
      * @throws \Exception
      *
      * @return bool|mixed|null
+     *
+     * @throws \Throwable
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws \Illuminate\Database\QueryException
+     * @throws \PDOException
+     * @throws \Exception
      */
     public function delete($id)
     {
@@ -328,14 +358,15 @@ abstract class BaseRepository
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             \DB::rollback();
-            throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
-        } catch (Illuminate\Database\QueryException $e) {
+            throw $e;
+        } catch (\Illuminate\Database\QueryException $e) {
             \DB::rollback();
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
         } catch (\PDOException $e) {
             \DB::rollback();
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
         } catch (\Exception $e) {
+            \DB::rollback();
             throw new \App\Exceptions\CustomException($e->getMessage(), $e->getCode());
         }
     }
