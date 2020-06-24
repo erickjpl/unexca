@@ -50,6 +50,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if ($exception instanceof \App\Exceptions\MailException)
+            return $exception->render($request);
+        
+        if ($exception instanceof \App\Exceptions\DBException)
+            return $exception->render($request);
+    
         return parent::render($request, $exception);
     }
 }

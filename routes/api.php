@@ -33,6 +33,9 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'middleware' => 'thrott
 
 
 Route::get('/users', 'Profile\ProfileController@index')->name('profile.index');
+Route::get('/users/{user}', 'Profile\ProfileController@show')->name('profile.show');
+
+Route::delete('/student/{student}', 'Profile\ProfileController@destroy')->name('student.delete');
 
 
 Route::middleware('jwt.auth')->get('/user', function (Request $request) {
