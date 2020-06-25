@@ -9,6 +9,7 @@ import * as mutations from './default/mutations'
 import * as actions from './default/actions'
 
 // Modules
+import auth from './auth'
 import profile from './profile'
 
 Vue.use(Vuex)
@@ -31,6 +32,7 @@ export default function (/* { ssrContext } */) {
 
     modules: {
       // example
+      auth,
       profile
     },
 

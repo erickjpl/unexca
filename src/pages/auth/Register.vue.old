@@ -1,92 +1,118 @@
 <template>
-  <div class="q-pa-md row">
-    <q-card class="my-card">
-      <q-card-section horizontal>
-        <q-img
-          class="col-5"
-          src="https://cdn.quasar.dev/img/parallax1.jpg"
-        />
+  <q-page class="flex flex-center">
+    <ValidationObserver ref="observer" v-slot="{ passes }">
+      <q-form @submit="passes(onSubmit)" @reset="onReset" class="q-gutter-md">
+        <ValidationProvider rules="required|email" v-slot="{ errors, invalid, validated }" name="email">
+          <q-input
+            filled
+            v-model="email"
+            type="email"
+            label="Your email *"
+            hint="Email address"
+            :error="invalid && validated"
+            :error-message="errors[0]"
+          />
+        </ValidationProvider>
 
-        <q-card-section class="col-7">
-        	<q-form
-			      @submit="onSubmit"
-			      @reset="onReset"
-			    >
-			      <q-input
-			        filled
-			        v-model="name"
-			        placeholder="Your name *"
-			        lazy-rules
-			        :rules="[ val => val && val.length > 0 || 'Please type something']"
-			      />
+        <ValidationProvider
+          name="password"
+          rules="required|confirmed:confirmation"
+          v-slot="{ errors, invalid, validated }"
+        >
+          <q-input
+            filled
+            v-model="password"
+            type="password"
+            label="Your Password"
+            hint="Enter a strong password"
+            :error="invalid && validated"
+            :error-message="errors[0]"
+          />
+        </ValidationProvider>
 
-			      <q-input
-			        filled
-			        type="number"
-			        v-model="age"
-			        placeholder="Your age *"
-			        lazy-rules
-			        :rules="[
-			          val => val !== null && val !== '' || 'Please type your age',
-			          val => val > 0 && val < 100 || 'Please type a real age'
-			        ]"
-			      />
+        <ValidationProvider
+          name="confirmation"
+          rules="required"
+          v-slot="{ errors, invalid, validated }"
+        >
+          <q-input
+            filled
+            v-model="confirmation"
+            type="password"
+            label="Password Confirmation"
+            hint="Confirm your passsword"
+            :error="invalid && validated"
+            :error-message="errors[0]"
+          />
+        </ValidationProvider>
 
-		      	<q-toggle v-model="accept" label="I accept the license and terms" />
+        <ValidationProvider rules="required" name="subject" v-slot="{ errors, invalid, validated }">
+          <q-select
+            filled
+            v-model="subject"
+            :options="options"
+            label="Filled"
+            :error="invalid && validated"
+            :error-message="errors[0]"
+          />
+        </ValidationProvider>
 
-      			<q-separator class="q-my-md" />
+        <ValidationProvider
+          rules="required|length:2"
+          name="drinks"
+          v-slot="{ errors, invalid, validated }"
+        >
+          <q-field :error="invalid && validated" :error-message="errors[0]" borderless>
+            <q-checkbox v-model="choices" label="Coffee" val="coffee" />
+            <q-checkbox v-model="choices" label="Tea" val="tea" />
+            <q-checkbox v-model="choices" label="Soda" val="soda" />
+          </q-field>
+        </ValidationProvider>
 
-			      <div>
-			        <q-btn flat label="Submit" type="submit" color="primary" />
-			        <q-btn flat label="Reset" type="reset" color="secondary" class="q-ml-sm" />
-			      </div>
-			    </q-form>
-        </q-card-section>
-      </q-card-section>
-    </q-card>
-  </div>
+        <div>
+          <q-btn label="Submit" type="submit" color="primary" />
+          <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+        </div>
+      </q-form>
+    </ValidationObserver>
+  </q-page>
 </template>
 
+<style>
+</style>
+
 <script>
+import { ValidationProvider, ValidationObserver } from "vee-validate";
+
 export default {
-  name: 'RegisterPage',
-  data () {
-    return {
-    	name: null,
-      age: null,
-      accept: false,
-      lorem: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-    }
+  name: "AppForm",
+  components: {
+    ValidationProvider,
+    ValidationObserver
   },
+  data: () => ({
+    email: "",
+    password: "",
+    confirmation: "",
+    subject: "",
+    choices: [],
+    options: ["", "Subject 1", "Subject 2"]
+  }),
   methods: {
-    onSubmit () {
-      if (this.accept !== true) {
-        this.$q.notify({
-          color: 'red-5',
-          textColor: 'white',
-          icon: 'warning',
-          message: 'You need to accept the license and terms first'
-        })
-      } else {
-        this.$q.notify({
-          color: 'green-4',
-          textColor: 'white',
-          icon: 'cloud_done',
-          message: 'Submitted'
-        })
-      }
+    onSubmit() {
+      // eslint-disable-next-line
+      console.log("Form submitted yay!");
     },
-    onReset () {
-      this.name = null
-      this.age = null
-      this.accept = false
+    onReset() {
+      this.email = "";
+      this.password = "";
+      this.confirmation = "";
+      this.subject = "";
+      this.choices = [];
+      requestAnimationFrame(() => {
+        this.$refs.observer.reset();
+      });
     }
   }
-}
+};
 </script>
-
-<style lang="sass" scoped>
-.my-card
-  width: 100%
-  max-width: 800px
-</style>

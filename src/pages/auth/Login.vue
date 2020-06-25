@@ -1,82 +1,156 @@
 <template>
-  <q-page class="bg-light-green window-height window-width row justify-center items-center">
-    <div class="column">
-      <div class="row justify-center">
-        <h5 class="text-h5 text-white q-my-md">UNEXCA</h5>
-      </div>
-
-      <div class="row">
-        <q-card square bordered class="shadow-1">
+  <q-page class="bg-primary window-height window-width flex flex-center row justify-center items-center">
+    <q-card class="bg-dark text-white col-12"
+      square
+      style="max-width: 650px"
+    >
+      <ValidationObserver ref="observer" v-slot="{ passes }">
+        <q-form @submit="passes(formLogin)" @reset="onReset">
           <q-card-section horizontal>
             <q-img
-              class="col-5"
+              class="col-5 row"
               src="https://cdn.quasar.dev/img/parallax1.jpg"
             />
 
             <q-card-section class="col-7">
-              <q-form class="q-gutter-md" @submit="onSubmit" @reset="onReset">
-                <q-input square filled clearable v-model="email" type="email" placeholder="email" />
-                <q-input square filled clearable v-model="password" type="password" placeholder="password" />
-              </q-form>
+              <div class="text-h6 text-center q-mb-md">
+                {{ $t('card.login.title') }}
+              </div>
 
-              <q-toggle v-model="accept" label="I accept the license and terms" />
+              <ValidationProvider rules="required" name="email" v-slot="{ errors, invalid, validated }">
+                <q-input class="q-my-sm"
+                  id="email"
+                  color="lime"
+                  filled
+                  v-model.trim="form.email"
+                  type="email"
+                  autofocus
+                  :hint="$t('field.hint.email')"
+                  :label="$t('field.email')"
+                  :error="invalid && validated"
+                  :error-message="errors[0]"
+                />
+              </ValidationProvider>
+
+              <ValidationProvider rules="required" name="password" v-slot="{ errors, invalid, validated }">
+                <q-input class="q-my-sm"
+                  id="password"
+                  color="lime"
+                  filled
+                  v-model.trim="form.password"
+                  type="password"
+                  @keyup.enter="formLogin"
+                  :hint="$t('field.hint.password')"
+                  :label="$t('field.password')"
+                  :error="invalid && validated"
+                  :error-message="errors[0]"
+                />
+              </ValidationProvider>
+
+              <ValidationProvider rules="" name="rememberMe" v-slot="{ errors, invalid, validated }">
+                <q-checkbox class="text-center"
+                  id="rememberMe"
+                  v-model="form.rememberMe"
+                  :label="$t('field.remember_me')"
+                />
+              </ValidationProvider>
 
               <q-separator class="q-my-md" />
 
-              <q-card-actions class="q-px-md">
-                <q-btn unelevated color="light-green-7" size="lg" class="full-width" label="Login" type="submit" />
+              <q-card-actions>
+                <q-btn class="full-width"
+                  unelevated
+                  color="primary"
+                  :loading="loading"
+                  type="submit"
+
+                >
+                  {{ $t('button.login') }}
+                </q-btn>
               </q-card-actions>
 
               <q-card-section class="text-center q-pa-none">
-                <p class="text-grey-6">Not reigistered? Created an Account</p>
+                <p class="text-grey-6">
+                  {{ $t('card.login.not_reigistered') }} 
+                  <router-link :to="{ name: 'password.forgot' }">{{ $t('link.created_account') }}</router-link>
+                </p>
+              </q-card-section>
+
+              <q-card-section class="text-center q-pa-none">
+                <router-link :to="{ name: 'password.forgot' }">
+                  {{ $t('link.password_forgot') }}
+                </router-link>
               </q-card-section>
             </q-card-section>
           </q-card-section>
-        </q-card>
-      </div>
-    </div>
+        </q-form>
+      </ValidationObserver>
+    </q-card>
   </q-page>
 </template>
 
 <script>
+import { ValidationProvider, ValidationObserver } from "vee-validate";
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'Login',
+  components: {
+    ValidationProvider,
+    ValidationObserver
+  },
   data () {
     return {
-      email: null,
-      password: null,
-      accept: false
+      form: {
+        email: 'guest@mail.com',
+        password: 'password',
+        rememberMe: false
+      },
+      loading: false
     }
   },
+  created() {
+    this.fetch()
+  },
   methods: {
-    onSubmit () {
-      if (this.accept !== true) {
-        this.$q.notify({
-          color: 'red-5',
-          textColor: 'white',
-          icon: 'warning',
-          message: 'You need to accept the license and terms first'
-        })
-      } else {
-        this.$q.notify({
-          color: 'green-4',
-          textColor: 'white',
-          icon: 'cloud_done',
-          message: 'Submitted'
-        })
-      }
+    ...mapActions('auth', ['login','fetch']),
+    formLogin () {
+      this.loading = true
+
+      this.login(this.form)
+      .then((response) => {
+        console.log( response )
+      }).catch((error) => {
+        console.log( error )
+
+        if (error.response) {
+          if (error.response.status === 401) {
+            this.$q.dialog({
+              // message: this.$t('auth.login.verification_required')
+            })
+          } else if (error.response.status === 403) {
+            this.$q.dialog({
+              // message: this.$t('auth.login.invalid_credentials')
+            })
+          } else {
+            console.error(error)
+          }
+        }
+      }).finally(() => {
+        this.loading = false
+      })
     },
-    onReset () {
-      this.name = null
-      this.age = null
-      this.accept = false
+    onReset() {
+      requestAnimationFrame(() => {
+        this.$refs.observer.reset();
+      });
     }
   }
 }
 </script>
 
-<style>
-.q-card {
-  width: 600px;
-}
+<style lang="sass" scoped>
+.flex-break
+  flex: 1 0 100% !important
+  height: 0 !important
 </style>

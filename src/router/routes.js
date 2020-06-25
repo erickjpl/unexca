@@ -1,26 +1,31 @@
-
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/MainLayout'),
     children: [
-      { path: '', name: 'index', component: () => import('pages/Index.vue') },
-      { path: 'about', name: 'about', component: () => import('pages/About.vue') },
-      { path: 'register', name: 'register', component: () => import('pages/auth/Register.vue') }
+      { path: '', name: 'index', component: () => import('pages/Index') },
+      { path: 'about', name: 'about', component: () => import('pages/About') },
+      { path: 'register', name: 'register', component: () => import('pages/auth/Register') }
     ]
   },
   {
     path: '/auth',
-    component: () => import('layouts/AuthLayout.vue'),
+    component: () => import('layouts/AuthLayout'),
     children: [
-      { path: 'login', name: 'login', component: () => import('pages/auth/Login.vue') },
+      { path: 'login', name: 'login', meta: { auth: false }, component: () => import('pages/auth/Login') },
+      { path: 'password', name: 'password', component: { render: h => h('router-view') },
+        children: [
+          { path: 'forgot', name: 'password.forgot', component: () => import('pages/auth/Login') },
+          { path: 'reset', name: 'password.reset', component: () => import('pages/auth/Login') }
+        ]
+      },
     ]
   },
   {
     path: '/dashboard',
-    component: () => import('layouts/DashboardLayout.vue'),
+    component: () => import('layouts/DashboardLayout'),
     children: [
-      { path: '', name: 'dashboard.index', component: () => import('pages/dashboard/Index.vue') }
+      { path: '', name: 'dashboard.index', meta: { auth: true }, component: () => import('pages/dashboard/Index') }
     ]
   }
 ]
@@ -29,7 +34,7 @@ const routes = [
 if (process.env.MODE !== 'ssr') {
   routes.push({
     path: '*',
-    component: () => import('pages/Error404.vue')
+    component: () => import('pages/Error404')
   })
 }
 

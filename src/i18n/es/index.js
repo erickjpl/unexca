@@ -24,12 +24,40 @@ export default {
 		}
   	},
 
-	fields: {
+	field: {
 		email: 'Correo electrónico',
 		password: 'Contraseña',
+		remember_me: 'Recuérdame',
 		confirmation: 'Confirmar contraseña',
 		subject: 'Llena',
-		drinks: 'Bebidas'
+		drinks: 'Bebidas',
+
+		hint: {
+			email: 'Ingrese su correo electrónico',
+			password: 'Ingrese su contraseña',
+			confirmation: 'Favor confirmar su contraseña',
+		}
+	},
+
+	button: {
+		save: 'Guardar',
+		reset: 'Resetear',
+		submit: 'Enviar',
+		close: 'Cerrar',
+		login: 'Iniciar Sesión',
+		register: 'Registrarse',
+	},
+
+	link: {
+		password_forgot: 'Olvide contraseña',
+		created_account: 'Create una cuenta',
+	},
+
+	card: {
+		login: {
+			title: 'Iniciar Sesión',
+			not_reigistered: 'No estas registrado..!',
+		},		
 	},
 
 	validation: es.messages

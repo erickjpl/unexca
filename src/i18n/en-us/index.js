@@ -24,12 +24,40 @@ export default {
 		}
 	},
 
-	fields: {
+	field: {
 		email: 'E-mail',
 		password: 'Password',
+		remember_me: 'Remember Me',
 		confirmation: 'Password confirmation',
 		subject: 'Filled',
-		drinks: 'Drinks'
+		drinks: 'Drinks',
+
+		hint: {
+			email: 'Enter your e-mail',
+			password: 'Enter your password',
+			confirmation: 'Please confirm your password',
+		}
+	},
+
+	button: {
+		save: 'Save',
+		reset: 'Reset',
+		submit: 'Submit',
+		close: 'Close',
+		login: 'Login',
+		register: 'Register',
+	},
+
+	link: {
+		password_forgot: 'Password forgot',
+		created_account: 'Created an account',
+	},
+
+	card: {
+		login: {
+			title: 'Login',
+			not_reigistered: 'Not registered..!',
+		},		
 	},
 
 	validation: en.messages
