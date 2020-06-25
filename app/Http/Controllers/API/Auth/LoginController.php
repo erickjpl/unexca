@@ -6,6 +6,7 @@ use Tymon\JWTAuth\JWTAuth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\Http\Resources\Auth\LoginResource;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -117,7 +118,7 @@ class LoginController extends Controller
     {
         $this->clearLoginAttempts($request);
 
-        return response()->json(['success'=>true, 'data'=>$request->user()], 200)->header('Autorization', $token); 
+        return (LoginResource::make($request->user()))->response()->header('Autorization', $token);
     }
 
     /**

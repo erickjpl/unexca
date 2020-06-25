@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'middleware' => 'throttle:20,5'], function () {
-	Route::post('login', 'LoginController@login');
+	Route::post('login', 'LoginController@login')->name('login');
 	Route::get('/login/{service}', 'SocialLoginController@redirect');
     Route::get('/login/{service}/callback', 'SocialLoginController@callback');
     

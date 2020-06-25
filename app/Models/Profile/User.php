@@ -123,7 +123,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function relativeStudent()
+    public function parent()
     {
         return $this->hasOne(\App\Models\Profile\RelativeStudent::class, 'user_id');
     }
@@ -141,7 +141,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      */
     public function userDetail()
     {
-        # return $this->hasOne(\App\Models\Profile\UserDetail::class, 'user_id');
+        return $this->hasOne(\App\Models\Profile\UserDetail::class, 'user_id');
     }
 
     /**

@@ -72,10 +72,7 @@ class ProfileController extends Controller
     public function update($id, UpdateUserAPIRequest $request)
     {
         try {
-            $repository = $this->userRepo->find($user);
-
-            if (empty($repository)) 
-                return response()->json(array('info' => 'El cliente no puede ser actualizado.', 'status' => '204'));
+            $repository = $this->userRepo->find($id);
 
             $repository = $this->userRepo->update($request->all(), $id);
 

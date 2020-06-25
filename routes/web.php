@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 
 Route::group(['namespace' => 'API\Auth', 'prefix' => 'auth'], function () {
-	Route::get('login', 'LoginController@showLoginForm')->name('login');
+	Route::get('login', 'LoginController@showLoginForm');
 	Route::get('register', 'RegisterController@showRegistrationForm')->name('register');
 	Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
 	Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
