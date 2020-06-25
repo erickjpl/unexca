@@ -43,7 +43,9 @@ return [
 
         'single' => [
             'driver' => 'single',
+            'tap' => [App\Logging\CustomizeLogging::class],
             'path' => storage_path('logs/laravel.log'),
+            'formatter' => Monolog\Formatter\HtmlFormatter::class,
             'level' => 'debug',
         ],
 

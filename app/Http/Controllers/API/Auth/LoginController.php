@@ -87,7 +87,8 @@ class LoginController extends Controller
 
         try {
             if ( ! $token = $this->attemptLogin($request)) 
-                return $this->sendFailedLoginResponse();            
+                return $this->sendFailedLoginResponse();  
+
         } catch(JWTExeption $e) {
             return $this->sendFailedLoginResponse();
         }

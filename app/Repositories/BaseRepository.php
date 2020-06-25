@@ -86,7 +86,7 @@ abstract class BaseRepository
         try {
             $query = $this->allQuery($search, $relation);
 
-            $this->audit('read', 'read paginated data', 'read paginated data');
+            $this->audit('read paginated data');
 
             return $query->paginate($perPage, $columns);
         } catch (\Illuminate\Database\QueryException $e) {
@@ -166,7 +166,7 @@ abstract class BaseRepository
         try {
             $query = $this->allQuery($search, $relation, $skip, $limit);
 
-            $this->audit('read', 'read data', 'read data');
+            $this->audit('read all data');
 
             return $query->get($columns);
         } catch (\Illuminate\Database\QueryException $e) {
@@ -237,6 +237,8 @@ abstract class BaseRepository
 
             if (count($relation))
                 $query = $this->getRelations($query,$relation);
+            
+            $this->audit('read find data');
 
             return $query->findOrFail($id, $columns);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
@@ -267,6 +269,8 @@ abstract class BaseRepository
     {
         try {
             $query = $this->allQuery($search, $relation, $skip, $limit);
+
+            $this->audit('read first data');
 
             return $query->firstOrFail($columns);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {

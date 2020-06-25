@@ -16,24 +16,19 @@ class QuestionObserver
      */
     public function created(Question $question)
     {
-        try {
-            $auth = \Auth::id() ?? User::findOrFail(1);
-
+        try { 
             DB::beginTransaction();
                 $question->audits()->create([
                     'type' => 'create',
                     'ip' => request()->ip(),
-                    'user' => $auth->nickname,
+                    'user' => auth()->user()->nickname ?? 'guest',
                     'old' => '{}',
                     'new' => $question->toJson(),
-                    'user_id' => $auth->id,
+                    'user_id' => auth()->id ?? 1,
                     'create_at' => now(),
                 ]);
 
             DB::commit();
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException\ModelNotFoundException $e) {
-            DB::rollback();
-            throw $e;
         } catch (\Throwable $e) {
             DB::rollback();
             throw $e;
@@ -48,7 +43,23 @@ class QuestionObserver
      */
     public function updated(Question $question)
     {
-        //
+        try { 
+            DB::beginTransaction();
+                $question->audits()->create([
+                    'type' => 'update',
+                    'ip' => request()->ip(),
+                    'user' => auth()->user()->nickname ?? 'guest',
+                    'old' => '{}',
+                    'new' => '{}',
+                    'user_id' => auth()->id ?? 1,
+                    'create_at' => now(),
+                ]);
+
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
 
     /**
@@ -59,24 +70,19 @@ class QuestionObserver
      */
     public function deleted(Question $question)
     {
-        try {
-            $auth = \Auth::id() ?? User::findOrFail(1);
-
+        try { 
             DB::beginTransaction();
                 $question->audits()->create([
                     'type' => 'delete',
                     'ip' => request()->ip(),
-                    'user' => $auth->nickname,
+                    'user' => auth()->user()->nickname ?? 'guest',
                     'new' => '{}',
                     'old' => $question->toJson(),
-                    'user_id' => $auth->id,
+                    'user_id' => auth()->id ?? 1,
                     'create_at' => now(),
                 ]);
 
             DB::commit();
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException\ModelNotFoundException $e) {
-            DB::rollback();
-            throw $e;
         } catch (\Throwable $e) {
             DB::rollback();
             throw $e;

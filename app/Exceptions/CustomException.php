@@ -15,6 +15,7 @@ class CustomException extends Exception
     {
         \Log::error($this->getMessage(), 
         	array(
+                'user' => array( 'id' => auth()->user()->id ?? 1, 'nickname' => auth()->user()->nickname ?? 'guest' ),
 	        	'code' => $this->getCode(),
 	        	'file' => $this->getFile(),
 	        	'line' => $this->getLine(),

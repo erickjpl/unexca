@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Traits;
 
-use App\Models\Profile\User;
 use Illuminate\Support\Facades\DB;
+use App\Models\Config\Audit;
 
 trait AuditTrait
 {
@@ -12,18 +12,21 @@ trait AuditTrait
      *
      * @throws \Throwable
      */
-    public function audit($type, $old, $new)
+    public function audit($data)
     {
         try {
             DB::beginTransaction();
-                $audit = \Auth::user() ?? User::findOrFail(1);
 
-                $audit->audits()->create([
-                    'type' => $type,
-                    'old' => $old,
-                    'new' => $new,
-                    'user_id' => $audit->id,
-                    'create_at' => today(),
+                Audit::create([
+                    'type' => 'read',
+                    'ip' => request()->ip(),
+                    'user' => auth()->user()->nickname ?? 'guest',
+                    'old' => (Object) ['action' => $data],
+                    'new' => (Object) ['action' => $data],
+                    'user_id' => auth()->id ?? 1,
+                    'create_at' => now(),
+                    'actionable_id' => auth()->id ?? 1,
+                    'actionable_type' => $this->model(),
                 ]);
 
             DB::commit();

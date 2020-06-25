@@ -59,7 +59,7 @@ class ProfileController extends Controller
     public function show(Request $request, $user)
     {
         try {
-            $repository = $this->userRepo->find($user, $request->except(['skip', 'limit']));
+            $repository = $this->studentRepo->find($user, $request->except(['skip', 'limit']));
 
             return response()->json($repository->toArray(), 200);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
