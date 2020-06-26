@@ -25,7 +25,8 @@ class LoginResource extends JsonResource
             'attributes' => [
                 'id' => $this->resource->id,
                 'nickname' => $this->resource->nickname,
-                'email' => $this->resource->email
+                'email' => $this->resource->email,
+                'token' => $this->resource->token
             ],
             'relationships' => [
                 'image' => [

@@ -26,9 +26,9 @@ class StudentSeeder extends Seeder
 
         foreach ($students as $student) {
         	factory(User::class)->create()->each(function ($user) use ($student) {
-        		$user->parent()->save( factory(RelativeStudent::class)->make(['student_id' => $student]) );
     			$user->image()->save( factory(Image::class)->make() );
                 $user->userDetail()->save( factory( \App\Models\Profile\UserDetail::class )->make() );
+        		$user->parent()->save( factory(RelativeStudent::class)->make(['student_id' => $student]) );
         	});        	
         }
     }

@@ -118,7 +118,10 @@ class LoginController extends Controller
     {
         $this->clearLoginAttempts($request);
 
-        return (LoginResource::make($request->user()))->response()->header('Autorization', $token);
+        $user = $request->user();
+        $user->token = "Bearer {$token}";
+
+        return (LoginResource::make($user))->response()->header('Authorization', "Bearer {$token}");
     }
 
     /**
