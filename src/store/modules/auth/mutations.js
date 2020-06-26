@@ -5,8 +5,7 @@ export function SET_USER (state, data) {
     state.user = {
       id: data.id,
       email: data.attributes.email,
-      nickname: data.attributes.name,
-      roles: data.attributes.roleNames
+      nickname: data.attributes.nickname
     }
   } else {
     state.user = null
@@ -24,14 +23,4 @@ export function SET_TOKEN (state, data) {
 export function LOGOUT (state, data) {
   state.user = null
   Cookies.remove('authorization_token')
-}
-
-export function ERROR (state, data) {
-  state.error = {
-    status: data.response.status,
-    statusText: data.response.statusText,
-    message: data.response.message,
-    file: data.response.data.file,
-    line: data.response.data.line
-  }
 }

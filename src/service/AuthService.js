@@ -10,27 +10,26 @@ const PASSWORD_RESET_USER = '/auth/password/reset?token='
 
 export default class ServiceAuthFactory {
 
-    constructor() { 
-        service.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('authorization_token') 
-    }
-
     register(data) {
         return service.post(REGISTER_USER, data)
             .then(  (response)  => Promise.resolve(response) )
-            .catch( (error)     => Promise.reject(error) )
+            .catch( (error)     => Promise.reject(error.response) )
     }
 
     login(data) {
-        return service.post(LOGIN_USER, data)
-            .then(  (response)  => Promise.resolve(response) )
-            .catch( (error)     => Promise.reject(error) )
+        const p = new Promise(function (resolve, reject) { 
+            return service.post(LOGIN_USER, data)
+                .then(  (response)  => resolve(response) )
+                .catch( (error)     => reject(error.response) )
+        })
+        return p
     }
 
     fetch() {
     	const p = new Promise(function (resolve, reject) { 
 	        return service.get(FETCH_USER)
 	            .then(  (response)  => resolve(response) )
-	            .catch( (error)     => reject(error) )
+	            .catch( (error)     => reject(error.response) )
 	    })
   		return p
     }
@@ -38,19 +37,19 @@ export default class ServiceAuthFactory {
     verify(token) {
         return service.get(`${VERIFICATION_USER}${token}`)
             .then(  (response)  => Promise.resolve(response) )
-            .catch( (error)     => Promise.reject(error) )
+            .catch( (error)     => Promise.reject(error.response) )
     }
 
     passwordForgot(data) {
         return service.post(PASSWORD_FORGOT_USER, data)
             .then(  (response)  => Promise.resolve(response) )
-            .catch( (error)     => Promise.reject(error) )
+            .catch( (error)     => Promise.reject(error.response) )
     }
 
     passwordReset(token, data) {
         return service.post(`${PASSWORD_RESET_USER}${token}`, data)
             .then(  (response)  => Promise.resolve(response) )
-            .catch( (error)     => Promise.reject(error) )
+            .catch( (error)     => Promise.reject(error.response) )
     }
 }
 

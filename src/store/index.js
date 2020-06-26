@@ -9,10 +9,26 @@ import * as mutations from './default/mutations'
 import * as actions from './default/actions'
 
 // Modules
-import auth from './auth'
-import profile from './profile'
+import auth from './modules/auth'
+import profile from './modules/profile'
 
 Vue.use(Vuex)
+
+/* BEGIN LOAD MODULES */
+/*const requireContext = require.context('./modules', true, /.*\.js$/)
+
+const modules = requireContext.keys()
+.map(file =>
+  [file.replace(/(^.\/)|(\.js$)/g, ''), requireContext(file)]
+)
+.reduce((modules, [name, module]) => {
+  if (module.namespaced === undefined) {
+    module.namespaced = true
+  }
+
+  return { ...modules, [name]: module }
+}, {})*/
+/* END LOAD MODULES */
 
 /*
  * If not building with SSR mode, you can

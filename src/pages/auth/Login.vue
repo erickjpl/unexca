@@ -102,7 +102,7 @@ export default {
   data () {
     return {
       form: {
-        email: 'guest@mail.com',
+        email: 'rosa56@example.org',
         password: 'password',
         rememberMe: false
       },
@@ -110,19 +110,18 @@ export default {
     }
   },
   created() {
-    this.fetch()
+    this.fetch().catch((error) => console.log(error))
   },
   methods: {
-    ...mapActions('auth', ['login','fetch']),
+    ...mapActions('auth', ['login', 'fetch']),
     formLogin () {
       this.loading = true
 
       this.login(this.form)
       .then((response) => {
-        console.log( response )
+        
       }).catch((error) => {
-        console.log( error )
-
+        console.log( "PAGE LOGIN", error )
         if (error.response) {
           if (error.response.status === 401) {
             this.$q.dialog({
