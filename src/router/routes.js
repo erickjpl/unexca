@@ -5,18 +5,18 @@ const routes = [
     children: [
       { path: '', name: 'index', component: () => import('pages/Index') },
       { path: 'about', name: 'about', component: () => import('pages/About') },
-      { path: 'register', name: 'register', component: () => import('pages/auth/Register') }
     ]
   },
   {
     path: '/auth',
     component: () => import('layouts/AuthLayout'),
     children: [
-      { path: 'login', name: 'login', meta: { auth: false }, component: () => import('pages/auth/Login') },
+      { path: 'login', name: 'login', meta: { guest: true }, component: () => import('pages/auth/Login') },
+      { path: 'register', name: 'register', meta: { guest: true }, component: () => import('pages/auth/Register') },
       { path: 'password', name: 'password', component: { render: h => h('router-view') },
         children: [
-          { path: 'forgot', name: 'password.forgot', component: () => import('pages/auth/Login') },
-          { path: 'reset', name: 'password.reset', component: () => import('pages/auth/Login') }
+          { path: 'forgot', name: 'password.forgot', meta: { guest: true }, component: () => import('pages/auth/Login') },
+          { path: 'reset', name: 'password.reset', meta: { guest: true }, component: () => import('pages/auth/Login') }
         ]
       },
     ]
@@ -25,7 +25,10 @@ const routes = [
     path: '/dashboard',
     component: () => import('layouts/DashboardLayout'),
     children: [
-      { path: '', name: 'dashboard.index', meta: { auth: true }, component: () => import('pages/dashboard/Index') }
+      { path: '', name: 'dashboard.index', meta: { auth: true }, component: () => import('pages/dashboard/Index') },
+      { path: 'logout', name: 'logout', meta: { auth: true }, component: () => import('components/general/Logout') },
+      { path: 'admin', name: 'dashboard.admin', meta: { auth: true, role: ['admin'] }, component: () => import('pages/dashboard/admin/Index') },
+      { path: 'other', name: 'dashboard.other', meta: { auth: true, role: ['superadmin'] }, component: () => import('pages/dashboard/admin/Other') }
     ]
   }
 ]

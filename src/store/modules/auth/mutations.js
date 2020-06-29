@@ -5,7 +5,8 @@ export function SET_USER (state, data) {
     state.user = {
       id: data.id,
       email: data.attributes.email,
-      nickname: data.attributes.nickname
+      nickname: data.attributes.nickname,
+      roles: ['admin']
     }
   } else {
     state.user = null

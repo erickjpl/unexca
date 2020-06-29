@@ -3,14 +3,10 @@
 import en from "vee-validate/dist/locale/en"
 
 export default {
-	failed: 'Action failed',
-	success: 'Action was successful',
-
 	// Menu
 	menu: {
 		home: 'Home',
 		about: 'About us',
-		dashboard: 'Dashboard',
 		login: 'Login',
 		register: 'Register',
 
@@ -18,28 +14,34 @@ export default {
 		caption: {
 			home: 'Homepage',
 			about: 'Information about us',
-			dashboard: 'Administration panel',
 			login: 'Enter in the system',
 			register: 'Register in the system',
+		},
+
+		dashboard: {
+			home: 'Home',
+			logout: 'Logout'
 		}
 	},
 
 	field: {
 		email: 'E-mail',
+		nickname: 'Username',
 		password: 'Password',
 		remember_me: 'Remember Me',
-		confirmation: 'Password confirmation',
-		subject: 'Filled',
-		drinks: 'Drinks',
+		password_confirmation: 'Password confirmation',
 
 		hint: {
 			email: 'Enter your e-mail',
+			nickname: 'Enter your user (without space and unique)',
 			password: 'Enter your password',
-			confirmation: 'Please confirm your password',
+			password_confirmation: 'Please confirm your password',
 		}
 	},
 
 	button: {
+		continue: 'Continue',
+		cancel: 'Cancelar',
 		save: 'Save',
 		reset: 'Reset',
 		submit: 'Submit',
@@ -57,7 +59,25 @@ export default {
 		login: {
 			title: 'Login',
 			not_reigistered: 'Not registered..!',
+		},
+		register: {
+			title: 'Register',
+			reigistered: 'Already registered..!',
 		},		
+	},
+
+	dialog: {
+		logout: {
+			title: 'Logout',
+			message: 'Sure you want to sign out..?'
+		}
+	},
+
+	message: {
+		error: {
+			error_401: 'Unauthorized',
+			error_403: 'Forbidden',
+		}
 	},
 
 	validation: en.messages

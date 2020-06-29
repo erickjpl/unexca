@@ -14,6 +14,14 @@ Vue.use(VueRouter)
  * with the Router instance.
  */
 
+ /* eslint-enable no-use-before-define */
+function isArrayOrString (variable) {
+  if (typeof variable === typeof [] || typeof variable === typeof '') {
+    return true
+  }
+  return false
+}
+
 export default function ({ store }/* { store, ssrContext } */) {
   const router = new VueRouter({
     scrollBehavior: () => ({ x: 0, y: 0 }),
@@ -26,7 +34,7 @@ export default function ({ store }/* { store, ssrContext } */) {
     base: process.env.VUE_ROUTER_BASE
   })
 
-  router.beforeEach((to, from, next) => {
+  /*router.beforeEach((to, from, next) => {
     const record = to.matched.find(record => record.meta.auth)
     
     if (record) {
@@ -38,8 +46,39 @@ export default function ({ store }/* { store, ssrContext } */) {
         // router.push({ name: 'dashboard.index' }).catch(err => {console.log(err)})
       }
     }
-
     next()
+  })*/
+
+  router.beforeEach((to, from, next) => {
+    const user = store.getters['auth/user']
+    const roles = to.matched.some(route => {
+      return route.meta.role && store.getters['auth/check'](route.meta.role)
+    })
+   
+    if(to.matched.some(record => record.meta.auth)) {
+      if (!store.getters['auth/loggedIn']) {
+        next({name: 'login', params: { nextUrl: to.fullPath }})
+      } else {
+        if(to.matched.some(record => record.meta.role)) {
+          if(roles){
+            next()
+          } else {
+            next({ name: from.name})
+          }
+        } else {
+          next()
+        }
+      }
+    } else if(to.matched.some(record => record.meta.guest)) {
+      if(!store.getters['auth/loggedIn']){
+        next()
+      }
+      else{
+        next({ name: 'dashboard.index'})
+      }
+    } else {
+      next()
+    }
   })
 
   return router

@@ -91,7 +91,7 @@
 
 <script>
 import { ValidationProvider, ValidationObserver } from "vee-validate";
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Login',
@@ -109,28 +109,26 @@ export default {
       loading: false
     }
   },
-  created() {
-    this.fetch().catch((error) => console.log(error))
-  },
   methods: {
-    ...mapActions('auth', ['login', 'fetch']),
+    ...mapActions('auth', ['login']),
     formLogin () {
       this.loading = true
 
       this.login(this.form)
       .then((response) => {
-        
+        this.$router.push({ name: 'dashboard.index' })
       }).catch((error) => {
-        console.log( "PAGE LOGIN", error )
         if (error.response) {
           if (error.response.status === 401) {
             this.$q.dialog({
-              // message: this.$t('auth.login.verification_required')
+              message: this.$t('message.error.error_401')
             })
           } else if (error.response.status === 403) {
             this.$q.dialog({
-              // message: this.$t('auth.login.invalid_credentials')
+              message: this.$t('message.error.error_403')
             })
+          } else if (error.response.status === 422) {
+            // errores laravel recorrer y pintar en input
           } else {
             console.error(error)
           }
@@ -147,9 +145,3 @@ export default {
   }
 }
 </script>
-
-<style lang="sass" scoped>
-.flex-break
-  flex: 1 0 100% !important
-  height: 0 !important
-</style>
