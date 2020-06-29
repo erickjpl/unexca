@@ -20,9 +20,9 @@ Route::get('/', function () {
 
 Route::group(['namespace' => 'API\Auth', 'prefix' => 'auth'], function () {
 	Route::get('login', 'LoginController@showLoginForm');
-	Route::get('register', 'RegisterController@showRegistrationForm')->name('register');
-	Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
-	Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
-	Route::get('password/confirm', 'ConfirmPasswordController@showConfirmForm')->name('password.confirm');
-	Route::get('email/verify', 'VerificationController@show')->name('verification.notice');
+	Route::get('register', 'RegisterController@showRegistrationForm');
+	Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm');
+	Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm');
+	Route::get('password/confirm', 'ConfirmPasswordController@showConfirmForm');
+	Route::get('email/verify', 'VerificationController@show');
 });

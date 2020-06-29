@@ -16,12 +16,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'middleware' => 'throttle:20,5'], function () {
 	Route::post('login', 'LoginController@login')->name('login');
-	Route::get('/login/{service}', 'SocialLoginController@redirect');
-    Route::get('/login/{service}/callback', 'SocialLoginController@callback');
+	Route::get('login/{service}', 'SocialLoginController@redirect');
+    Route::get('login/{service}/callback', 'SocialLoginController@callback');
     
 	Route::post('logout', 'LoginController@logout')->name('logout');
 
-	Route::post('register', 'RegisterController@register');
+	Route::post('register', 'RegisterController@register')->name('register');
 
 	Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 	Route::post('password/reset', 'ResetPasswordController@reset')->name('password.update');
@@ -32,10 +32,10 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'middleware' => 'thrott
 });
 
 
-Route::get('/users', 'Profile\ProfileController@index')->name('profile.index');
-Route::get('/users/{user}', 'Profile\ProfileController@show')->name('profile.show');
+Route::get('users', 'Profile\ProfileController@index')->name('profile.index');
+Route::get('users/{user}', 'Profile\ProfileController@show')->name('profile.show');
 
-Route::delete('/student/{student}', 'Profile\ProfileController@destroy')->name('student.delete');
+Route::delete('student/{student}', 'Profile\ProfileController@destroy')->name('student.delete');
 
 
 Route::middleware('jwt.auth')->get('/user', function (Request $request) {

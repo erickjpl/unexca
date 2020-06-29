@@ -25,6 +25,7 @@ class LoginTest extends TestCase
         $detail = $user->userDetail()->save(factory(\App\Models\Profile\UserDetail::class)->make());
 
         $response = $this->post('/api/auth/login', array('email' => $user->email, 'password' => 'password'));
+        $token = $response->headers->get('authorization');
 
         if ( $response->assertStatus(200) ) {
             $response->assertJson([
@@ -34,7 +35,8 @@ class LoginTest extends TestCase
                     'attributes' => [
                         'id' => $user->id,
                         'nickname' => $user->nickname,
-                        'email' => $user->email
+                        'email' => $user->email,
+                        'token' => $token
                     ],
                     'relationships' => [
                         'image' => [
@@ -108,6 +110,7 @@ class LoginTest extends TestCase
         $parent = $user->parent()->save(factory(\App\Models\Profile\RelativeStudent::class)->make(['student_id' => $student->id]));
 
         $response = $this->postJson('/api/auth/login', array('email' => $user->email, 'password' => 'password'));
+        $token = $response->headers->get('authorization');
 
         if ( $response->assertStatus(200) ) {
             $response->assertJson([
@@ -117,7 +120,8 @@ class LoginTest extends TestCase
                     'attributes' => [
                         'id' => $user->id,
                         'nickname' => $user->nickname,
-                        'email' => $user->email
+                        'email' => $user->email,
+                        'token' => $token
                     ],
                     'relationships' => [
                         'image' => [
@@ -187,6 +191,7 @@ class LoginTest extends TestCase
         $detail = $user->userDetail()->save(factory(\App\Models\Profile\UserDetail::class)->make());
 
         $response = $this->post('/api/auth/login', array('email' => $user->email, 'password' => 'password'));
+        $token = $response->headers->get('authorization');
 
         if ( $response->assertStatus(200) ) {
             $response->assertJson([
@@ -196,7 +201,8 @@ class LoginTest extends TestCase
                     'attributes' => [
                         'id' => $user->id,
                         'nickname' => $user->nickname,
-                        'email' => $user->email
+                        'email' => $user->email,
+                        'token' => $token
                     ],
                     'relationships' => [
                         'image' => [

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\API\Auth;
 
-use App\Models\Profile\User;
 use Tymon\JWTAuth\JWTAuth;
+use App\Models\Profile\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\Auth\RegisterResource;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
@@ -97,7 +98,11 @@ class RegisterController extends Controller
 
             $token = $this->auth->attempt( $this->credentials($request) );
 
-            return response()->json(['success'=>true, 'data'=>$user])->header('Autorization', $token);
+            $user->token = "Bearer {$token}";
+
+            return (RegisterResource::make($user))->response()->header('Authorization', "Bearer {$token}");
+
+            #return response()->json(['success'=>true, 'data'=>$user])->header('Autorization', $token);
         } 
 
         return response()->json(['success'=>false, 'data'=>$validator->errors()]);
