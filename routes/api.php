@@ -31,6 +31,10 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'middleware' => 'thrott
 	Route::post('email/resend', 'VerificationController@resend')->name('verification.resend');
 });
 
+Route::group(['middleware' => ['jwt.verify']], function() {
+   /*AÑADE AQUI LAS RUTAS QUE QUIERAS PROTEGER CON JWT*/
+});
+
 
 Route::get('users', 'Profile\ProfileController@index')->name('profile.index');
 Route::get('users/{user}', 'Profile\ProfileController@show')->name('profile.show');

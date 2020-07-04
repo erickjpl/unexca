@@ -136,4 +136,17 @@ class LoginController extends Controller
             'errors'=>['email' => 'These credentials do not match our records.']
         ], 422);
     }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        $this->auth->invalidate();
+
+        return response()->json([ 'success' => true ]);
+    }
 }
