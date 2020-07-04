@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { SessionStorage } from 'quasar'
 
 import routes from './routes'
 
@@ -34,21 +35,6 @@ export default function ({ store }/* { store, ssrContext } */) {
     base: process.env.VUE_ROUTER_BASE
   })
 
-  /*router.beforeEach((to, from, next) => {
-    const record = to.matched.find(record => record.meta.auth)
-    
-    if (record) {
-      if (!store.getters['auth/loggedIn']) {
-        next({ name: 'login' })
-        // router.push({ name: 'login' }).catch(err => {console.log(err)})
-      } else if (isArrayOrString(record.meta.auth) && !store.getters['auth/check'](record.meta.auth)) {
-        next({ name: 'dashboard.index' })
-        // router.push({ name: 'dashboard.index' }).catch(err => {console.log(err)})
-      }
-    }
-    next()
-  })*/
-
   router.beforeEach((to, from, next) => {
     const user = store.getters['auth/user']
     const roles = to.matched.some(route => {
@@ -56,7 +42,7 @@ export default function ({ store }/* { store, ssrContext } */) {
     })
    
     if(to.matched.some(record => record.meta.auth)) {
-      if (!store.getters['auth/loggedIn']) {
+      if (! SessionStorage.getItem('access_token')) {
         next({name: 'login', params: { nextUrl: to.fullPath }})
       } else {
         if(to.matched.some(record => record.meta.role)) {
@@ -70,7 +56,7 @@ export default function ({ store }/* { store, ssrContext } */) {
         }
       }
     } else if(to.matched.some(record => record.meta.guest)) {
-      if(!store.getters['auth/loggedIn']){
+      if(! SessionStorage.getItem('access_token')){
         next()
       }
       else{

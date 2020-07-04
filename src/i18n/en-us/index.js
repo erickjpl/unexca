@@ -20,7 +20,20 @@ export default {
 
 		dashboard: {
 			home: 'Home',
+			profile: 'Profile',
 			logout: 'Logout'
+		}
+	},
+
+	form: {
+		profile: {
+			title: {
+				account: 'Account data',
+				profile: 'Personal information',
+				dni: 'V: Venezuelan, E: Foreign',
+				female: 'Female',
+				male: 'Male'
+			}
 		}
 	},
 
@@ -30,6 +43,14 @@ export default {
 		password: 'Password',
 		remember_me: 'Remember Me',
 		password_confirmation: 'Password confirmation',
+
+		name: 'Name',
+		lastname: 'Lastname',
+		dni: 'National identity document',
+		phone: 'Phone',
+		birthdate: 'Birthdate',
+		address: 'Address',
+		genre: 'Genre',
 
 		hint: {
 			email: 'Enter your e-mail',
@@ -70,6 +91,15 @@ export default {
 		logout: {
 			title: 'Logout',
 			message: 'Sure you want to sign out..?'
+		}
+	},
+
+	splitter: {
+		profile: {
+			profile: 'Profile',
+			teacher: 'Teacher',
+			parent: 'Parent',
+			student: 'Student'
 		}
 	},
 

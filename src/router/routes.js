@@ -26,6 +26,7 @@ const routes = [
     component: () => import('layouts/DashboardLayout'),
     children: [
       { path: '', name: 'dashboard.index', meta: { auth: true }, component: () => import('pages/dashboard/Index') },
+      { path: 'profile', name: 'dashboard.profile', meta: { auth: true }, component: () => import('pages/dashboard/profile/Index') },
       { path: 'logout', name: 'logout', meta: { auth: true }, component: () => import('components/general/Logout') },
       { path: 'admin', name: 'dashboard.admin', meta: { auth: true, role: ['admin'] }, component: () => import('pages/dashboard/admin/Index') },
       { path: 'other', name: 'dashboard.other', meta: { auth: true, role: ['superadmin'] }, component: () => import('pages/dashboard/admin/Other') }

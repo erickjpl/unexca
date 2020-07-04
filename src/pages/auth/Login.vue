@@ -18,7 +18,7 @@
               </div>
 
               <ValidationProvider rules="required" name="email" v-slot="{ errors, invalid, validated }">
-                <q-input class="q-my-sm"
+                <q-input class="q-my-sm" standout="text-white"
                   id="email"
                   color="lime"
                   filled
@@ -33,7 +33,7 @@
               </ValidationProvider>
 
               <ValidationProvider rules="required" name="password" v-slot="{ errors, invalid, validated }">
-                <q-input class="q-my-sm"
+                <q-input class="q-my-sm" standout="text-white"
                   id="password"
                   color="lime"
                   filled
@@ -70,14 +70,16 @@
               </q-card-actions>
 
               <q-card-section class="text-center q-pa-none">
-                <p class="text-grey-6">
+                <p class="text-info">
                   {{ $t('card.login.not_reigistered') }} 
-                  <router-link :to="{ name: 'password.forgot' }">{{ $t('link.created_account') }}</router-link>
+                  <router-link :to="{ name: 'register' }" class="q-link text-accent">
+                    {{ $t('link.created_account') }}
+                  </router-link>
                 </p>
               </q-card-section>
 
               <q-card-section class="text-center q-pa-none">
-                <router-link :to="{ name: 'password.forgot' }">
+                <router-link :to="{ name: 'password.forgot' }" class="q-link text-accent">
                   {{ $t('link.password_forgot') }}
                 </router-link>
               </q-card-section>

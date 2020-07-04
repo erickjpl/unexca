@@ -1,15 +1,11 @@
-import { Cookies } from 'quasar'
+import { SessionStorage } from 'quasar'
 
 export function user (state) {
   return state.user
 }
 
 export function token (state) {
-  return Cookies.get('authorization_token')
-}
-
-export function loggedIn (state) {
-  return state.user !== null
+  return SessionStorage.getItem('access_token')
 }
 
 export const check = state => roles => {

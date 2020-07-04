@@ -1,4 +1,4 @@
-import { Cookies } from 'quasar'
+import { SessionStorage } from 'quasar'
 
 export function SET_USER (state, data) {
   if (data) {
@@ -15,13 +15,13 @@ export function SET_USER (state, data) {
 
 export function SET_TOKEN (state, data) {
   if (data.rememberMe) {
-    Cookies.set('authorization_token', data.token, { expires: 365 })
+    SessionStorage.set('access_token', data.token, { expires: 365 })
   } else {
-    Cookies.set('authorization_token', data.token)
+    SessionStorage.set('access_token', data.token)
   }
 }
 
 export function LOGOUT (state, data) {
   state.user = null
-  Cookies.remove('authorization_token')
+  SessionStorage.remove('access_token')
 }

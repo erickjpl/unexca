@@ -1,7 +1,7 @@
 import { ProfileService } from '../../../service/ProfileService'
 
 export async function getAllUsers ({commit}, q) {
-	await ProfileService.getAll(q)
+	/*await ProfileService.getAll(q)
         .then( response => commit( 'ALL_USER', response.data ))
-        .catch( error => Promise.reject(error))
+        .catch( error => Promise.reject(error))*/
 }

@@ -5,7 +5,7 @@
       style="max-width: 650px"
     >
       <ValidationObserver ref="observer" v-slot="{ passes }">
-        <q-form @submit="passes(formLogin)" @reset="onReset">
+        <q-form @submit="passes(formRegister)" @reset="onReset">
           <q-card-section horizontal>
             <q-img
               class="col-5 row"
@@ -38,7 +38,6 @@
                   filled
                   v-model.trim="form.email"
                   type="email"
-                  autofocus
                   :hint="$t('field.hint.email')"
                   :label="$t('field.email')"
                   :error="invalid && validated"
@@ -67,7 +66,7 @@
                   filled
                   v-model.trim="form.password_confirmation"
                   type="password"
-                  @keyup.enter="formLogin"
+                  @keyup.enter="formRegister"
                   :hint="$t('field.hint.password_confirmation')"
                   :label="$t('field.password_confirmation')"
                   :error="invalid && validated"
@@ -90,14 +89,14 @@
               </q-card-actions>
 
               <q-card-section class="text-center q-pa-none">
-                <p class="text-grey-6">
+                <p class="text-info">
                   {{ $t('card.register.reigistered') }} 
-                  <router-link :to="{ name: 'password.forgot' }">{{ $t('link.created_account') }}</router-link>
+                  <router-link :to="{ name: 'login' }" class="q-link text-accent">{{ $t('link.created_account') }}</router-link>
                 </p>
               </q-card-section>
 
               <q-card-section class="text-center q-pa-none">
-                <router-link :to="{ name: 'password.forgot' }">
+                <router-link :to="{ name: 'password.forgot' }" class="q-link text-accent">
                   {{ $t('link.password_forgot') }}
                 </router-link>
               </q-card-section>
@@ -122,10 +121,10 @@ export default {
   data () {
     return {
       form: {
-        email: '',
+        email: '@mail.com',
         nickname: '',
         password: 'password',
-        password_confirmation: '',
+        password_confirmation: 'password',
         rememberMe: false
       },
       loading: false
@@ -133,7 +132,7 @@ export default {
   },
   methods: {
     ...mapActions('auth', ['register']),
-    formLogin () {
+    formRegister () {
       this.loading = true
 
       this.register(this.form)
@@ -155,8 +154,8 @@ export default {
             // errores laravel recorrer y pintar en input
           } else {
             console.log( "Page REGISTER L-157", error )
-            console.error(error)
           }
+          console.error(error)
         }
       }).finally(() => {
         this.loading = false

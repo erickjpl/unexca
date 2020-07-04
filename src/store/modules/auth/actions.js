@@ -2,7 +2,11 @@ import { AuthService } from '../../../service/AuthService'
 
 export async function register ({commit}, data) {
   await AuthService.register(data)
-    .then( response => commit( 'SET_USER', response.data ))
+    .then( response => {
+      let token = response.data.data.attributes.token
+      commit('SET_USER', response.data.data)
+      commit('SET_TOKEN', { token: token, rememberMe: '' })
+    })
     .catch( error => Promise.reject(error))
 }
 
@@ -13,22 +17,24 @@ export async function login ({commit}, data) {
       let token = response.data.data.attributes.token
       commit('SET_USER', data)
       commit('profile/SET_PROFILE', data.relationships, {root: true})
-      commit('SET_TOKEN', { token: token, rememberMe: data.rememberMe })
+      commit('SET_TOKEN', { token: token, rememberMe: '' })
     })
     .catch( error => Promise.reject(error))
 }
 
-export async function fetch ({commit, getters}) {
+/*export async function fetch ({commit, getters}) {
   // crear un interceptor para la autorizacion
-  // AuthService.defaults.headers.common['Authorization'] = getters.token;
 
   await AuthService.fetch()
     .then( response => commit('SET_USER', response.data.user.data))
     .catch( error => Promise.reject(error))
-}
+}*/
 
-export function logout ({commit}) {
-  commit('LOGOUT', null)
+export async function logout ({commit, getters}) {
+  AuthService.headers(getters.token)
+  await AuthService.logout()
+    .then( response => commit('LOGOUT', null) )
+    .catch( error => Promise.reject(error))
 }
 
 export async function verify ({commit}, token) {

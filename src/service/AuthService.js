@@ -1,14 +1,17 @@
 import { Cookies } from 'quasar'
 import { service } from '../boot/axios'
 
+//const FETCH_USER = '/auth/user'
 const REGISTER_USER = '/auth/register'
 const LOGIN_USER = '/auth/login'
-const FETCH_USER = '/auth/user'
+const LOGOUT_USER = '/auth/logout'
 const VERIFICATION_USER = '/auth/verify?token='
 const PASSWORD_FORGOT_USER = '/auth/password/forgot'
 const PASSWORD_RESET_USER = '/auth/password/reset?token='
 
-export default class ServiceAuthFactory {
+export default class ServiceAuthFactory 
+{
+    headers(token) { service.defaults.headers.common['Authorization'] = token }
 
     register(data) {
         return service.post(REGISTER_USER, data)
@@ -25,14 +28,23 @@ export default class ServiceAuthFactory {
         return p
     }
 
-    fetch() {
+    logout() {
+        const p = new Promise(function (resolve, reject) { 
+            return service.post(LOGOUT_USER)
+                .then(  (response)  => resolve(response) )
+                .catch( (error)     => reject(error.response) )
+        })
+        return p
+    }
+
+    /*fetch() {
     	const p = new Promise(function (resolve, reject) { 
 	        return service.get(FETCH_USER)
 	            .then(  (response)  => resolve(response) )
 	            .catch( (error)     => reject(error.response) )
 	    })
   		return p
-    }
+    }*/
 
     verify(token) {
         return service.get(`${VERIFICATION_USER}${token}`)

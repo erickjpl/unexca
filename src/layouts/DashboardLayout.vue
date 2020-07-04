@@ -44,7 +44,7 @@
         <q-scroll-area class="fit mini-slot cursor-pointer" :bar-style="barStyle">
           <q-list padding>
           <template v-for="(menuItem, index) in menuList">
-            <q-item clickable :active="menuItem.label === 'Outbox'" v-ripple :key="index">
+            <q-item clickable v-ripple :key="index" v-if="check(menuItem.role)">
               <q-icon :name="menuItem.icon" :color="menuItem.color" class="mini-icon" :key="index" />
             </q-item>
 
@@ -121,7 +121,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapMutations } from 'vuex'
 
   const menuList = [
     {
@@ -138,46 +138,24 @@
       label: 'menu.dashboard.home',
       path: 'dashboard.admin',
       role: 'admin',
-      separator: true
+      separator: false
     },
     {
       icon: 'settings',
       color: 'orange',
       label: 'menu.dashboard.home',
       path: 'dashboard.other',
-      role: 'admin',
-      separator: true
-    },
-    /*{
-      icon: 'send',
-      color: 'red',
-      label: 'Outbox',
+      role: 'superadmin',
       separator: false
     },
     {
-      icon: 'delete',
-      color: 'teal',
-      label: 'Trash',
-      separator: false
-    },
-    {
-      icon: 'error',
-      color: 'orange',
-      label: 'Spam',
-      separator: true
-    },
-    {
-      icon: 'settings',
+      icon: 'account_circle',
       color: 'purple',
-      label: 'Settings',
-      separator: false
-    },
-    {
-      icon: 'feedback',
-      color: 'pink',
-      label: 'Send Feedback',
+      label: 'menu.dashboard.profile',
+      path: 'dashboard.profile',
+      role: '',
       separator: true
-    },*/
+    },
     {
       icon: 'exit_to_app',
       color: 'pink',
@@ -192,6 +170,7 @@
     name: 'DashboardLayout',
     data () {
       return {
+        lang: '',
         drawer: false,
         miniState: true,
         menuList,
@@ -205,9 +184,21 @@
       }
     },
     computed: {
-      ...mapGetters('auth', ['user', 'check'])
+      ...mapGetters('auth', ['user', 'check']),
+      ...mapGetters(['currentLanguage', 'languages'])
+    },
+    watch: {
+      lang(lang) {
+        this.$i18n.locale = lang
+        import(`quasar/lang/${lang}`).then(({ default: messages }) => { this.$q.lang.set(messages) })
+        this.SET_LANGUAGE(lang)
+      }
+    },
+    created() {
+      this.lang = this.currentLanguage
     },
     methods: {
+      ...mapMutations(['SET_LANGUAGE']),
       drawerClick (e) {
         // if in "mini" state and user
         // click on drawer, we switch it to "normal" mode

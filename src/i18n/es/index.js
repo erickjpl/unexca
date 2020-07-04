@@ -23,9 +23,22 @@ export default {
 
 		dashboard: {
 			home: 'Inicio',
+			profile: 'Perfil',
 			logout: 'Cerrar sesión'
 		}
   	},
+
+	form: {
+		profile: {
+			title: {
+				account: 'Datos de la cuenta',
+				profile: 'Datos personales',
+				dni: 'V: Venezolana, E: Extranjero',
+				female: 'Femenino',
+				male: 'Masculino'
+			}
+		}
+	},
 
 	field: {
 		email: 'Correo electrónico',
@@ -33,6 +46,14 @@ export default {
 		password: 'Contraseña',
 		remember_me: 'Recuérdame',
 		password_confirmation: 'Confirmar contraseña',
+
+		name: 'Nombre',
+		lastname: 'Apellido',
+		dni: 'Cédula de identidad',
+		phone: 'Teléfono',
+		birthdate: 'Fecha de cumpleaños',
+		address: 'Dirección',
+		genre: 'Género',
 
 		hint: {
 			email: 'Ingrese su correo electrónico',
@@ -44,7 +65,7 @@ export default {
 
 	button: {
 		continue: 'Continuar',
-		cancel: 'Cancel',
+		cancel: 'Cancelar',
 		save: 'Guardar',
 		reset: 'Resetear',
 		submit: 'Enviar',
@@ -73,6 +94,15 @@ export default {
 		logout: {
 			title: 'Cerrar Sesión',
 			message: 'Seguro que desea cerrar sesión..?'
+		}
+	},
+
+	splitter: {
+		profile: {
+			profile: 'Perfil',
+			teacher: 'Docente',
+			parent: 'Representante',
+			student: 'Estudiante'
 		}
 	},
 

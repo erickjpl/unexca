@@ -16,7 +16,7 @@
       }).onOk(() => {
         this.logout().then(() => {
           this.$router.push({ name: 'index' })
-        })
+        }).catch(error => console.log(error))
       }).onCancel(() => {
         this.$router.go(-1)
       })
