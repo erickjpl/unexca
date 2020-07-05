@@ -21,8 +21,8 @@ $factory->define(UserDetail::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'lastname' => $faker->lastName,
-        'dni' => $faker->numberBetween(100000,99999999),
-        'phone' => $faker->numberBetween(1000000,9999999),
+        'dni' => $faker->randomElement(array('V ', 'E ')) . $faker->numberBetween(100000,99999999),
+        'phone' => '+'.$faker->numberBetween(100000000000,999999999999),
         'birthdate' => now(),
         'address' => $faker->streetAddress,
         'genre' => $faker->randomElement(array('female', 'male')),

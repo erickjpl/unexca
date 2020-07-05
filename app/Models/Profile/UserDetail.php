@@ -13,7 +13,7 @@ class UserDetail extends Model
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
     
-    protected $dates = ['deleted_at', 'birthdate'];
+    protected $dates = ['deleted_at'];
 
     /**
      * The table associated with the model.
@@ -62,7 +62,7 @@ class UserDetail extends Model
 		'lastname'  => 'string',
 		'dni'  => 'string',
 		'phone'  => 'string',
-		'birthdate'  => 'date:Y-m-d',
+		'birthdate'  => 'date:d/m/Y',
 		'address'  => 'string',
 		'genre'  => 'string',
 		'user_id'  => 'integer',
@@ -76,6 +76,16 @@ class UserDetail extends Model
     public function getRouteKeyName()
     {
         return 'id';
+    }
+
+    /**
+     * Get the user's full name.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return "{$this->lastname}, {$this->name}";
     }
 
     /**

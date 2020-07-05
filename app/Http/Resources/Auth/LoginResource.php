@@ -45,9 +45,6 @@ class LoginResource extends JsonResource
                     StudentResource::make( $this->student )
                 ]
             ],
-            'links' => [
-                'self' => route('login')
-            ],
             'meta' => [
                 'description' => 'Iniciar sesión'
             ]

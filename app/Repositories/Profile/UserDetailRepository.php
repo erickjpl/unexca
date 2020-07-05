@@ -2,24 +2,29 @@
 
 namespace App\Repositories\Profile;
 
-use App\Models\Profile\Student;
+use App\Models\Profile\UserDetail;
 use App\Repositories\BaseRepository;
 
 /**
- * Class StudentRepository
+ * Class UserDetailRepository
  *
  * @author Erick Pérez
  * @package App\Repositories\API\Profile
 */
 
-class StudentRepository extends BaseRepository
+class UserDetailRepository extends BaseRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'type',
-        'status',
+        'name',
+        'lastname',
+        'dni',
+        'phone',
+        'birthdate',
+        'address',
+        'genre',
         'user_id',
     ];
 
@@ -55,6 +60,6 @@ class StudentRepository extends BaseRepository
      **/
     public function model()
     {
-        return Student::class;
+        return UserDetail::class;
     }
 }

@@ -19,6 +19,7 @@ class UserDetailResource extends JsonResource
             'type' => \App\Models\Profile\UserDetail::class,
             'attributes' => [
                 'id' => $this->resource->id,
+                'full_name' => $this->resource->full_name,
                 'name' => $this->resource->name,
                 'lastname' => $this->resource->lastname,
                 'dni' => $this->resource->dni,
@@ -26,6 +27,9 @@ class UserDetailResource extends JsonResource
                 'birthdate' => $this->resource->birthdate->format('Y-m-d'),
                 'address' => $this->resource->address,
                 'genre' => $this->resource->genre,
+            ],
+            'meta' => [
+                'description' => 'Datos personales del usuario'
             ]
         ];
     }

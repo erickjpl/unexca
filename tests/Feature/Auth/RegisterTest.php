@@ -45,7 +45,7 @@ class RegisterTest extends TestCase
                         'self' => 'http://localhost:8000/api/auth/register'
                     ],
                     'meta' => [
-                        'description' => 'Registro de usuario'
+                        'description' => 'Registro de nuevos usuarios'
                     ]
                 ]
             ]);

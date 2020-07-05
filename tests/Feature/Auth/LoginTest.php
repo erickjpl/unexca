@@ -57,6 +57,7 @@ class LoginTest extends TestCase
                                 'type' => \App\Models\Profile\UserDetail::class,
                                 'attributes' => [
                                     'id'        => $detail->id,
+                                    'full_name' => $detail->full_name,
                                     'name'      => $detail->name,
                                     'lastname'  => $detail->lastname,
                                     'dni'       => $detail->dni,
@@ -64,6 +65,9 @@ class LoginTest extends TestCase
                                     'birthdate' => $detail->birthdate->format('Y-m-d'),
                                     'address'   => $detail->address,
                                     'genre'     => $detail->genre,
+                                ],
+                                'meta' => [
+                                    'description' => 'Datos personales del usuario'
                                 ]
                             )
                         ],
@@ -80,9 +84,6 @@ class LoginTest extends TestCase
                         ],
                         'parent' => [null],
                         'student' => [null]
-                    ],
-                    'links' => [
-                        'self' => 'http://localhost:8000/api/auth/login'
                     ],
                     'meta' => [
                         'description' => 'Iniciar sesión'
@@ -142,6 +143,7 @@ class LoginTest extends TestCase
                                 'type' => \App\Models\Profile\UserDetail::class,
                                 'attributes' => [
                                     'id'        => $detail->id,
+                                    'full_name' => $detail->full_name,
                                     'name'      => $detail->name,
                                     'lastname'  => $detail->lastname,
                                     'dni'       => $detail->dni,
@@ -164,9 +166,6 @@ class LoginTest extends TestCase
                             )
                         ],
                         'student' => [null]
-                    ],
-                    'links' => [
-                        'self' => 'http://localhost:8000/api/auth/login'
                     ],
                     'meta' => [
                         'description' => 'Iniciar sesión'
@@ -223,6 +222,7 @@ class LoginTest extends TestCase
                                 'type' => \App\Models\Profile\UserDetail::class,
                                 'attributes' => [
                                     'id'        => $detail->id,
+                                    'full_name' => $detail->full_name,
                                     'name'      => $detail->name,
                                     'lastname'  => $detail->lastname,
                                     'dni'       => $detail->dni,
@@ -246,9 +246,6 @@ class LoginTest extends TestCase
                                 ]
                             )
                         ]
-                    ],
-                    'links' => [
-                        'self' => 'http://localhost:8000/api/auth/login'
                     ],
                     'meta' => [
                         'description' => 'Iniciar sesión'

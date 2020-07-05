@@ -288,7 +288,7 @@ abstract class BaseRepository
      * Update model record for given id
      *
      * @param array $input
-     * @param int $id
+     * @param Class $model
      *
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Model
      *
@@ -298,14 +298,10 @@ abstract class BaseRepository
      * @throws \PDOException
      * @throws \Exception
      */
-    public function update($input, $id)
+    public function update($input, $model)
     {
         try {
             \DB::beginTransaction();
-
-                $query = $this->model->newQuery();
-
-                $model = $query->findOrFail($id);
 
                 $model->fill($input);
 

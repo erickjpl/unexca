@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Auth;
+namespace App\Http\Resources\Profile;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RegisterResource extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,10 +21,9 @@ class RegisterResource extends JsonResource
                 'id' => $this->resource->id,
                 'nickname' => $this->resource->nickname,
                 'email' => $this->resource->email,
-                'token' => $this->resource->token
             ],
             'meta' => [
-                'description' => 'Registro de nuevos usuarios'
+                'description' => 'Detalles de la cuenta del usuario'
             ]
         ];
     }

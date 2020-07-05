@@ -32,7 +32,11 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'middleware' => 'thrott
 });
 
 Route::group(['middleware' => ['jwt.verify']], function() {
-   /*AÑADE AQUI LAS RUTAS QUE QUIERAS PROTEGER CON JWT*/
+	Route::group(['namespace' => 'Profile', 'prefix' => 'profile'], function () {
+		Route::put('user/{user}', 'ProfileController@user')->name('profile.update.user');
+		Route::put('detail/{user}', 'ProfileController@detail')->name('profile.update.detail');
+		Route::put('user/password/{user}', 'ProfileController@password')->name('profile.update.password');
+	});
 });
 
 

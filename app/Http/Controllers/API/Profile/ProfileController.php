@@ -8,6 +8,10 @@ use App\Http\Controllers\Controller;
 # Repositories
 use App\Repositories\Profile\UserRepository;
 use App\Repositories\Profile\StudentRepository;
+use App\Repositories\Profile\UserDetailRepository;
+# Response Resource
+use App\Http\Resources\Profile\UserDetailResource;
+use App\Http\Resources\Profile\UserResource;
 
 /**
  * Class ProfileController
@@ -20,11 +24,70 @@ class ProfileController extends Controller
     private $userRepo;
     /** @var  StudentRepository */
     private $studentRepo;
+    /** @var  UserDetailRepository */
+    private $userDetailRepo;
 
     public function __construct()
     {
         $this->userRepo = new UserRepository();
         $this->studentRepo = new StudentRepository();
+        $this->userDetailRepo = new UserDetailRepository();
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Profile\UserDetail  $userDetail
+     * @return \App\Http\Resources\Profile\UserResource
+     */
+    public function user(Request $request, $user)
+    {
+        $input = $this->config( $request->all() );
+
+        try {
+            $model = $this->userRepo->find($user);
+
+            $repository = $this->userRepo->update($input, $model);
+
+            return UserResource::make($repository);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json('El recurso no fue encontrado..!', 404);
+        } catch (\App\Exceptions\CustomException $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Profile\UserDetail  $userDetail
+     * @return \App\Http\Resources\Profile\UserDetailResource
+     */
+    public function detail(Request $request, $user)
+    {
+        $input = $this->config( $request->all() );
+
+        try {
+            $model = $this->userDetailRepo->first(['user_id' => $user]);
+
+            $repository = $this->userDetailRepo->update($input, $model);
+
+            return UserDetailResource::make($repository);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json('El recurso no fue encontrado..!', 404);
+        } catch (\App\Exceptions\CustomException $e) {
+            throw $e;
+        }
+    }
+
+    protected function config($input) 
+    {
+        if (isset($input['birthdate'])) 
+            $input['birthdate'] = \DateTime::createFromFormat('d/m/Y', $request->birthdate); 
+        if (isset($input['password'])) 
+            $input['password'] = \Hash::make($input['password']);
+
+        return $input;
     }
 
     public function index(Request $request)
