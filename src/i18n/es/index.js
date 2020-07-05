@@ -3,8 +3,22 @@
 import es from "vee-validate/dist/locale/es"
 
 export default {
-	failed: 'Accion fallida',
-	success: 'La acción fue exitosa',
+	meta:{
+		login: {
+			title: 'Iniciar Sesión',
+			tag: {
+				description: 'Verificar las credenciales para poder acceder al sistema',
+				keywords: '',
+			}
+		},
+		register: {
+			title: 'Registrar',
+			tag: {
+				description: 'Crear un nuevo usuario del sistema para acceder en el futuro',
+				keywords: '',
+			}
+		}
+	},
 
   	// Menu
   	menu: {
@@ -45,15 +59,20 @@ export default {
 		nickname: 'Nombre de usuario',
 		password: 'Contraseña',
 		remember_me: 'Recuérdame',
+		roles: 'Rol',
 		password_confirmation: 'Confirmar contraseña',
 
+		id: 'Identificador',
 		name: 'Nombre',
 		lastname: 'Apellido',
+		full_name: 'Nombre completo',
 		dni: 'Cédula de identidad',
 		phone: 'Teléfono',
 		birthdate: 'Fecha de cumpleaños',
 		address: 'Dirección',
 		genre: 'Género',
+		status:  'Estatus',
+		type: 'Tipo',
 
 		hint: {
 			email: 'Ingrese su correo electrónico',
@@ -99,9 +118,10 @@ export default {
 
 	splitter: {
 		profile: {
-			profile: 'Perfil',
+			user: 	 'Cuenta',
+			detail:  'Perfil',
 			teacher: 'Docente',
-			parent: 'Representante',
+			parent:  'Representante',
 			student: 'Estudiante'
 		}
 	},

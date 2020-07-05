@@ -1,3 +1,18 @@
+export function SET_DETAIL ( state, data ) {
+    let detail = data.data.attributes
+
+    state.profile.detail = {
+        name: detail.name,
+        lastname: detail.lastname,
+        full_name: detail.full_name,
+        phone: (detail.phone !== null) ? detail.phone : null,
+        dni: (detail.dni !== null) ? detail.dni : null,
+        genre: detail.genre,
+        birthdate: (detail.birthdate !== null) ? detail.birthdate : null,
+        address: (detail.address !== null) ? detail.address : null
+    }
+}
+
 export function SET_PROFILE ( state, data ) {
 	let profile = {}
     let detail = data.detail[0].attributes
@@ -8,6 +23,7 @@ export function SET_PROFILE ( state, data ) {
         		id: detail.id,
         		name: detail.name,
         		lastname: detail.lastname,
+                full_name: detail.full_name,
         		phone: (detail.phone !== null) ? detail.phone : null,
         		dni: (detail.dni !== null) ? detail.dni : null,
         		genre: detail.genre,
@@ -39,15 +55,5 @@ export function SET_PROFILE ( state, data ) {
         state.profile = profile
     } else {
         state.profile = null
-    }
-}
-
-export function ERROR ( state, erros ) {
-	let error = {
-        status: data.response.status,
-        statusText: data.response.statusText,
-        message: data.response.message,
-        file: data.response.data.file,
-        line: data.response.data.line
     }
 }

@@ -1,6 +1,6 @@
 <template>
   <q-page class="bg-primary window-height window-width flex flex-center row justify-center items-center">
-    <q-card class="bg-dark text-white col-12"
+    <q-card class="bg-grey-2 text-white col-12"
       square
       style="max-width: 650px"
     >
@@ -18,10 +18,7 @@
               </div>
 
               <ValidationProvider rules="required" name="email" v-slot="{ errors, invalid, validated }">
-                <q-input class="q-my-sm" standout="text-white"
-                  id="email"
-                  color="lime"
-                  filled
+                <q-input class="q-my-sm" standout="bg-accent text-white"
                   v-model.trim="form.email"
                   type="email"
                   autofocus
@@ -33,10 +30,7 @@
               </ValidationProvider>
 
               <ValidationProvider rules="required" name="password" v-slot="{ errors, invalid, validated }">
-                <q-input class="q-my-sm" standout="text-white"
-                  id="password"
-                  color="lime"
-                  filled
+                <q-input class="q-my-sm" standout="bg-accent text-white"
                   v-model.trim="form.password"
                   type="password"
                   @keyup.enter="formLogin"
@@ -49,7 +43,6 @@
 
               <ValidationProvider rules="" name="rememberMe" v-slot="{ errors, invalid, validated }">
                 <q-checkbox class="text-center"
-                  id="rememberMe"
                   v-model="form.rememberMe"
                   :label="$t('field.remember_me')"
                 />
@@ -104,11 +97,26 @@ export default {
   data () {
     return {
       form: {
-        email: 'rosa56@example.org',
-        password: 'password',
+        email: 'haydeelzp@gmail.com',
+        password: '1q2w3e',
         rememberMe: false
       },
       loading: false
+    }
+  },
+  meta() {
+    return {
+      // sets document title 
+      title: this.$t('meta.login.title'),
+      // optional; sets final title as "Index Page - My Website", useful for multiple level meta
+      titleTemplate: title => `STA - ${title}`,
+
+      // meta tags
+      meta: {
+        description: { name: 'description', content: this.$t('meta.login.tag.description') },
+        keywords: { name: 'keywords', content: 'Quasar website' },
+        equiv: { 'http-equiv': 'Content-Type', content: 'text/html; charset=UTF-8' }
+      }
     }
   },
   methods: {

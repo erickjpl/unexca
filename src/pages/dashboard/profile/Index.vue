@@ -18,12 +18,13 @@
       <template v-slot:before>
         <q-tabs
           v-model="tab"
+          active-color="primary"
+          indicator-color="primary"
           vertical
         >
-          <q-tab :name="tabs.detail.name" :icon="tabs.detail.icon" :label="$t(tabs.detail.label)" v-if="tabs.detail.isVisible" />
-          <q-tab :name="tabs.teacher.name" :icon="tabs.teacher.icon" :label="$t(tabs.teacher.label)" v-if="tabs.teacher.isVisible" />
-          <q-tab :name="tabs.parent.name" :icon="tabs.parent.icon" :label="$t(tabs.parent.label)" v-if="tabs.parent.isVisible" />
-          <q-tab :name="tabs.student.name" :icon="tabs.student.icon" :label="$t(tabs.student.label)" v-if="tabs.student.isVisible" />
+          <template v-for="item in tabs">
+            <q-tab :name="item.name" :icon="item.icon" :label="$t(item.label)" v-if="item.isVisible" />
+          </template>
         </q-tabs>
       </template>
 
@@ -32,100 +33,30 @@
           v-model="tab"
           animated
           swipeable
-          vertical
           transition-prev="jump-up"
           transition-next="jump-up"
         >
-          <q-tab-panel :name="tabs.detail.name">
+          <q-tab-panel :name="tab.name" v-for="(tab, index) in tabs" :key="index">
             <q-list bordered padding>
-              <q-item>
-                <q-item-section avatar>
-                  <q-icon color="primary" name="verified" />
-                </q-item-section>
-                <q-item-section>Name</q-item-section>
-                <q-item-section>
-                  <q-item-label caption>{{ profile.detail.lastname }}, {{ profile.detail.name }}</q-item-label>
-                </q-item-section>
-              </q-item>
+              <show-component :info="user" v-if="tab.name === 'user' && !tab.edit && !changePass" />
 
-              <q-separator spaced inset="item" />
+              <template v-for="(item, x) in profile" v-if="tab.name == x && !tab.edit">
+                <show-component :info="item" />
+              </template>
 
-              <q-item>
-                <q-item-section avatar>
-                  <q-icon color="primary" name="new_releases" />
-                </q-item-section>
-                <q-item-section>DNI</q-item-section>
-                <q-item-section>
-                  <q-item-label caption>{{ profile.detail.dni }}</q-item-label>
-                </q-item-section>
-              </q-item>
+              <q-page-sticky position="bottom-right" :offset="[18, 18]" style="z-index: 1" v-if="!tab.edit && tab.name != 'student' && !changePass">
+                <q-fab icon="add" direction="up" color="accent" v-if="tab.name === 'user'">
+                  <q-fab-action @click="changePass = true" color="primary" icon="fingerprint" />
+                  <q-fab-action @click="tab.edit = true" color="primary" icon="person_pin" />
+                </q-fab>
 
-              <q-separator spaced inset="item" />
+                <q-btn v-else fab icon="edit" color="accent" @click="tab.edit = true" />
+              </q-page-sticky>
 
-              <q-item>
-                <q-item-section avatar>
-                  <q-icon color="primary" name="new_releases" />
-                </q-item-section>
-                <q-item-section>Phone</q-item-section>
-                <q-item-section>
-                  <q-item-label caption>{{ profile.detail.phone }}</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-separator spaced inset="item" />
-
-              <q-item>
-                <q-item-section avatar>
-                  <q-icon color="primary" name="new_releases" />
-                </q-item-section>
-                <q-item-section>Birthdate</q-item-section>
-                <q-item-section>
-                  <q-item-label caption>{{ profile.detail.birthdate }}</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-separator spaced inset="item" />
-
-              <q-item>
-                <q-item-section avatar>
-                  <q-icon color="primary" name="new_releases" />
-                </q-item-section>
-                <q-item-section>Genre</q-item-section>
-                <q-item-section>
-                  <q-item-label caption>{{ profile.detail.genre }}</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-
-            <profile-component v-if="tab.name == 'profile'" />
-          </q-tab-panel>
-
-          <q-tab-panel :name="tabs.student.name">
-            <q-list bordered padding>
-              <q-item>
-                <q-item-section avatar>
-                  <q-icon color="primary" name="verified" />
-                </q-item-section>
-                <q-item-section>Type</q-item-section>
-                <q-item-section>
-                  <q-item-label caption>{{ profile.student.type }}</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-separator spaced inset="item" />
-
-              <q-item>
-                <q-item-section avatar>
-                  <q-icon color="primary" name="new_releases" />
-                </q-item-section>
-                <q-item-section>Status</q-item-section>
-                <q-item-section>
-                  <q-item-label caption>{{ profile.student.status }}</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-
-            <student-component v-if="tab.name == 'student'" />
+              <password-component v-if="tab.name == 'user'    && changePass"        @edit="changePass = $event" />
+              <account-component  v-if="tab.name == 'user'    && tabs.user.edit"    @edit="tabs.user.edit = $event" />
+              <profile-component  v-if="tab.name == 'detail'  && tabs.detail.edit"  @edit="tabs.detail.edit = $event" />
+            </q-list>  
           </q-tab-panel>
         </q-tab-panels>
       </template>
@@ -134,26 +65,32 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import ProfileComponent from 'components/profile/ProfileComponent'
-  import StudentComponent from 'components/profile/StudentComponent'
+  import { mapGetters }    from 'vuex'
+  import ShowComponent     from 'components/profile/ShowComponent'
+  import AccountComponent  from 'components/profile/AccountComponent'
+  import ProfileComponent  from 'components/profile/ProfileComponent'
+  import PasswordComponent from 'components/profile/PasswordComponent'
 
   export default {
     name: 'DahboardIndex',
     components: {
+      ShowComponent,
+      AccountComponent,
       ProfileComponent,
-      StudentComponent
+      PasswordComponent,
     },
     data () {
       return {
-        tab: 'profile',
+        changePass: false,
+        tab: 'user',
         tabs: {
-          detail:  { name: 'profile', icon: 'account_circle',    label: 'splitter.profile.profile', isVisible: false },
-          teacher: { name: 'teacher', icon: 'psychology',        label: 'splitter.profile.teacher', isVisible: false },
-          parent:  { name: 'parent',  icon: 'escalator_warning', label: 'splitter.profile.parent',  isVisible: false },
-          student: { name: 'student', icon: 'face',              label: 'splitter.profile.student', isVisible: false }
+          user:   {name:'user',    icon:'account_circle',    label:'splitter.profile.user',    isVisible:true,  edit:false},
+          detail: {name:'detail',  icon:'account_circle',    label:'splitter.profile.detail',  isVisible:false, edit:false},
+          teacher:{name:'teacher', icon:'psychology',        label:'splitter.profile.teacher', isVisible:false, edit:false},
+          parent: {name:'parent',  icon:'escalator_warning', label:'splitter.profile.parent',  isVisible:false, edit:false},
+          student:{name:'student', icon:'face',              label:'splitter.profile.student', isVisible:false, edit:false}
         },
-        splitterModel: 25
+        splitterModel: 27
       }
     },
     computed: {
@@ -162,8 +99,14 @@
     },
     created() {
       Object.keys(this.tabs).forEach(obj => {
-          this.tabs[obj].isVisible = this.profile.hasOwnProperty(obj) ? true : false
+          if (this.profile.hasOwnProperty(obj))
+           this.tabs[obj].isVisible = true
       })
+    },
+    methods: {
+      onClick () {
+        // console.log('Clicked on a fab action')
+      }
     }
   }
 </script>

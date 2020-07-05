@@ -22,13 +22,12 @@ export async function login ({commit}, data) {
     .catch( error => Promise.reject(error))
 }
 
-/*export async function fetch ({commit, getters}) {
-  // crear un interceptor para la autorizacion
-
-  await AuthService.fetch()
-    .then( response => commit('SET_USER', response.data.user.data))
+export async function updateAccount ({commit, getters}, {id, q}) {
+  AuthService.headers(getters.token)
+  await AuthService.user(id, q)
+    .then( response => commit('SET_USER', response.data.data))
     .catch( error => Promise.reject(error))
-}*/
+}
 
 export async function logout ({commit, getters}) {
   AuthService.headers(getters.token)

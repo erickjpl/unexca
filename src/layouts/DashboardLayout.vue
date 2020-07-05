@@ -48,7 +48,7 @@
               <q-icon :name="menuItem.icon" :color="menuItem.color" class="mini-icon" :key="index" />
             </q-item>
 
-           <q-separator v-if="menuItem.separator" />
+            <q-separator v-if="menuItem.separator" />
           </template>
         </q-list>
         </q-scroll-area>

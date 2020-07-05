@@ -1,7 +1,7 @@
 import { Cookies } from 'quasar'
 import { service } from '../boot/axios'
 
-//const FETCH_USER = '/auth/user'
+const FETCH_USER = '/profile/user'
 const REGISTER_USER = '/auth/register'
 const LOGIN_USER = '/auth/login'
 const LOGOUT_USER = '/auth/logout'
@@ -37,14 +37,14 @@ export default class ServiceAuthFactory
         return p
     }
 
-    /*fetch() {
+    user(id, data) {
     	const p = new Promise(function (resolve, reject) { 
-	        return service.get(FETCH_USER)
+	        return service.put(`${FETCH_USER}/${id}`, data)
 	            .then(  (response)  => resolve(response) )
 	            .catch( (error)     => reject(error.response) )
 	    })
   		return p
-    }*/
+    }
 
     verify(token) {
         return service.get(`${VERIFICATION_USER}${token}`)

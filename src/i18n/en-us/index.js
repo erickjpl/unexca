@@ -3,6 +3,23 @@
 import en from "vee-validate/dist/locale/en"
 
 export default {
+	meta:{
+		login: {
+			title: 'Login',
+			tag: {
+				description: 'Verify credentials to access the system',
+				keywords: '',
+			}
+		},
+		register: {
+			title: 'Register',
+			tag: {
+				description: 'Create a new system user for future access',
+				keywords: '',
+			}
+		}
+	},
+
 	// Menu
 	menu: {
 		home: 'Home',
@@ -42,15 +59,20 @@ export default {
 		nickname: 'Username',
 		password: 'Password',
 		remember_me: 'Remember Me',
+		roles: 'Role',
 		password_confirmation: 'Password confirmation',
 
+		id: 'Identifier',
 		name: 'Name',
 		lastname: 'Lastname',
+		full_name: 'Full name',
 		dni: 'National identity document',
 		phone: 'Phone',
 		birthdate: 'Birthdate',
 		address: 'Address',
 		genre: 'Genre',
+		status:  'Status',
+		type: 'Type',
 
 		hint: {
 			email: 'Enter your e-mail',
@@ -96,10 +118,11 @@ export default {
 
 	splitter: {
 		profile: {
-			profile: 'Profile',
+			user: 	 'Account',
+			detail:  'Profile',
 			teacher: 'Teacher',
-			parent: 'Parent',
-			student: 'Student'
+			parent:  'Parent',
+			student: 'Student',
 		}
 	},
 

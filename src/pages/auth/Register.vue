@@ -1,6 +1,6 @@
 <template>
   <q-page class="bg-primary window-height window-width flex flex-center row justify-center items-center">
-    <q-card class="bg-dark text-white col-12"
+    <q-card class="bg-grey-2 text-white col-12"
       square
       style="max-width: 650px"
     >
@@ -18,10 +18,7 @@
               </div>
 
               <ValidationProvider rules="required" name="nickname" v-slot="{ errors, invalid, validated }">
-                <q-input class="q-my-sm"
-                  id="nickname"
-                  color="lime"
-                  filled
+                <q-input class="q-my-sm" standout="bg-accent text-white"
                   v-model.trim="form.nickname"
                   autofocus
                   :hint="$t('field.hint.nickname')"
@@ -32,10 +29,7 @@
               </ValidationProvider>
 
               <ValidationProvider rules="required" name="email" v-slot="{ errors, invalid, validated }">
-                <q-input class="q-my-sm"
-                  id="email"
-                  color="lime"
-                  filled
+                <q-input class="q-my-sm" standout="bg-accent text-white"
                   v-model.trim="form.email"
                   type="email"
                   :hint="$t('field.hint.email')"
@@ -46,10 +40,7 @@
               </ValidationProvider>
 
               <ValidationProvider rules="required" name="password" v-slot="{ errors, invalid, validated }">
-                <q-input class="q-my-sm"
-                  id="password"
-                  color="lime"
-                  filled
+                <q-input class="q-my-sm" standout="bg-accent text-white"
                   v-model.trim="form.password"
                   type="password"
                   :hint="$t('field.hint.password')"
@@ -60,10 +51,7 @@
               </ValidationProvider>
 
               <ValidationProvider rules="required" name="password_confirmation" v-slot="{ errors, invalid, validated }">
-                <q-input class="q-my-sm"
-                  id="password_confirmation"
-                  color="lime"
-                  filled
+                <q-input class="q-my-sm" standout="bg-accent text-white"
                   v-model.trim="form.password_confirmation"
                   type="password"
                   @keyup.enter="formRegister"
@@ -128,6 +116,21 @@ export default {
         rememberMe: false
       },
       loading: false
+    }
+  },
+  meta() {
+    return {
+      // sets document title 
+      title: this.$t('meta.register.title'),
+      // optional; sets final title as "Index Page - My Website", useful for multiple level meta
+      titleTemplate: title => `STA - ${title}`,
+
+      // meta tags
+      meta: {
+        description: { name: 'description', content: this.$t('meta.register.tag.description') },
+        keywords: { name: 'keywords', content: 'Quasar website' },
+        equiv: { 'http-equiv': 'Content-Type', content: 'text/html; charset=UTF-8' }
+      }
     }
   },
   methods: {

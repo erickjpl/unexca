@@ -4,6 +4,8 @@ export default class ServiceFactory {
 
     constructor(url) { this.url = url }
 
+    headers(token) { service.defaults.headers.common['Authorization'] = token }
+   
     getAll(q) {
         return service.get( this.url, { params: q } )
             .then(  (response)  => Promise.resolve(response) )
@@ -22,8 +24,8 @@ export default class ServiceFactory {
             .catch( (error)     => Promise.reject(error.response) )
     }
 
-    update(data) {
-        return service.put( `${this.url}/${data.id}`, data )
+    update(id, data) {
+        return service.put( `${this.url}/${id}`, data )
             .then(  (response)  => Promise.resolve(response) )
             .catch( (error)     => Promise.reject(error.response) )
     }
