@@ -41,9 +41,6 @@ class RegisterTest extends TestCase
                         'email' => $user->email,
                         'token' => $token
                     ],
-                    'links' => [
-                        'self' => 'http://localhost:8000/api/auth/register'
-                    ],
                     'meta' => [
                         'description' => 'Registro de nuevos usuarios'
                     ]
