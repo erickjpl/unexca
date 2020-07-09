@@ -1,6 +1,6 @@
 <template>
   <q-page class="bg-primary window-height window-width flex flex-center row justify-center items-center">
-    <q-card class="bg-grey-2 text-white col-12"
+    <q-card class="bg-grey-2 col-12"
       square
       style="max-width: 650px"
     >
@@ -152,13 +152,11 @@ export default {
               message: this.$t('message.error.error_403')
             })
           } else if (error.response.status === 422) {
-            console.log( "Page REGISTER L-153", error )
-            console.log( "Page REGISTER L-154", error.response )
-            // errores laravel recorrer y pintar en input
+            this.$q.dialog({ message: error.response })
           } else {
-            console.log( "Page REGISTER L-157", error )
+            this.$q.dialog({ message: error.response })
           }
-          console.error(error)
+          this.$q.dialog({ message: error.response })
         }
       }).finally(() => {
         this.loading = false

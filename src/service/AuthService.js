@@ -1,18 +1,25 @@
-import { Cookies } from 'quasar'
-import { service } from '../boot/axios'
+import { LocalStorage } from 'quasar'
+import { service } from 'boot/axios'
 
 const FETCH_USER = '/profile/user'
 const REGISTER_USER = '/auth/register'
 const LOGIN_USER = '/auth/login'
 const LOGOUT_USER = '/auth/logout'
-const VERIFICATION_USER = '/auth/verify?token='
+const VERIFICATION_USER = '/auth/email/verify'
 const PASSWORD_FORGOT_USER = '/auth/password/forgot'
 const PASSWORD_RESET_USER = '/auth/password/reset?token='
 
+service.interceptors.request.use(function(config) {
+    const access_token = LocalStorage.getItem('access_token');
+
+    if(!! access_token)
+      config.headers.Authorization = access_token
+
+    return config;
+}, err => Promise.reject(err))
+
 export default class ServiceAuthFactory 
 {
-    headers(token) { service.defaults.headers.common['Authorization'] = token }
-
     register(data) {
         return service.post(REGISTER_USER, data)
             .then(  (response)  => Promise.resolve(response) )
@@ -46,8 +53,8 @@ export default class ServiceAuthFactory
   		return p
     }
 
-    verify(token) {
-        return service.get(`${VERIFICATION_USER}${token}`)
+    verify(data) {
+        return service.get(`${VERIFICATION_USER}/${data.id}/${data.hash}?expires=${data.expires}&signature=${data.signature}`)
             .then(  (response)  => Promise.resolve(response) )
             .catch( (error)     => Promise.reject(error.response) )
     }

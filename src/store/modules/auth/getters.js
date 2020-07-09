@@ -1,11 +1,9 @@
-import { SessionStorage } from 'quasar'
-
 export function user (state) {
   return state.user
 }
 
-export function token (state) {
-  return SessionStorage.getItem('access_token')
+export function verifyParam (state) {
+  return state.verify
 }
 
 export const check = state => roles => {

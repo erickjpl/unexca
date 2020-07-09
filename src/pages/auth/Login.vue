@@ -1,6 +1,6 @@
 <template>
   <q-page class="bg-primary window-height window-width flex flex-center row justify-center items-center">
-    <q-card class="bg-grey-2 text-white col-12"
+    <q-card class="bg-grey-2 col-12"
       square
       style="max-width: 650px"
     >
@@ -86,7 +86,7 @@
 
 <script>
 import { ValidationProvider, ValidationObserver } from "vee-validate";
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'Login',
@@ -97,8 +97,8 @@ export default {
   data () {
     return {
       form: {
-        email: 'haydeelzp@gmail.com',
-        password: '1q2w3e',
+        email: 'test-y@mail.com',
+        password: '12345678',
         rememberMe: false
       },
       loading: false
@@ -119,33 +119,42 @@ export default {
       }
     }
   },
+  created() {
+    console.log(this.$route)
+    console.log(!! this.$route.params.nextUrl)
+  },
   methods: {
     ...mapActions('auth', ['login']),
-    formLogin () {
+    formLogin() {
       this.loading = true
 
       this.login(this.form)
-      .then((response) => {
-        this.$router.push({ name: 'dashboard.index' })
-      }).catch((error) => {
-        if (error.response) {
-          if (error.response.status === 401) {
-            this.$q.dialog({
-              message: this.$t('message.error.error_401')
-            })
-          } else if (error.response.status === 403) {
-            this.$q.dialog({
-              message: this.$t('message.error.error_403')
-            })
-          } else if (error.response.status === 422) {
-            // errores laravel recorrer y pintar en input
+        .then((response) => {
+          if(!! this.$route.params.nextUrl) {
+            this.$router.push(this.$route.params.nextUrl)
           } else {
-            console.error(error)
+            this.$router.push({ name: 'dashboard.index' })
           }
-        }
-      }).finally(() => {
-        this.loading = false
-      })
+        }).catch((error) => {
+          console.log(error)
+          if (error.response) {
+            if (error.response.status === 401) {
+              this.$q.dialog({
+                message: this.$t('message.error.error_401')
+              })
+            } else if (error.response.status === 403) {
+              this.$q.dialog({
+                message: this.$t('message.error.error_403')
+              })
+            } else if (error.response.status === 422) {
+              // errores laravel recorrer y pintar en input
+            } else {
+              console.error(error)
+            }
+          }
+        }).finally(() => {
+          this.loading = false
+        })
     },
     onReset() {
       requestAnimationFrame(() => {

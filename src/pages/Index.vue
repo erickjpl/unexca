@@ -8,18 +8,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-
-export default {
-  name: 'PageIndex',
-  created() {
-  	this.getAllUsers()
-  },
-  computed: {
-	  ...mapGetters('profile', ['users'])
-  },
-  methods: {
-    ...mapActions('profile', ['getAllUsers'])
+  export default {
+    name: 'PageIndex',
   }
-}
 </script>

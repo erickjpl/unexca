@@ -91,6 +91,7 @@ export default {
 		close: 'Cerrar',
 		login: 'Iniciar Sesión',
 		register: 'Registrarse',
+		resend: 'Reenviar',
 	},
 
 	link: {
@@ -130,7 +131,8 @@ export default {
 		error: {
 			error_401: 'No autorizado',
 			error_403: 'Prohibido',
-		}
+		},
+		verify_email: 'Favor verifique su email..! Así podremos garantizar la comunicación.'
 	},
 
 	validation: es.messages

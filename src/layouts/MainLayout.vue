@@ -116,20 +116,9 @@ export default {
   watch: {
     lang(lang) {
       this.$i18n.locale = lang
-      // import(`quasar/lang/${lang}`).then(language => { this.$q.lang.set(language.default) })
       import(`quasar/lang/${lang}`).then(({ default: messages }) => { this.$q.lang.set(messages) })
       this.SET_LANGUAGE(lang)
-    },
-    /* Otra forma
-    setLocale (locale) {
-      import(`quasar/lang/${locale}`).then(({ default: messages }) => { this.$q.lang.set(messages) })
-
-      import(`src/i18n/${locale}`).then(({ default: messages}) => {
-        this.$i18n.locale = locale
-        this.$i18n.setLocaleMessage(locale, messages)
-      })
     }
-    */
   },
   methods: {
     ...mapMutations(['SET_LANGUAGE'])  

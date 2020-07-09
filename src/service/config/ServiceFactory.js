@@ -1,11 +1,19 @@
-import { service } from '../../boot/axios'
+import { LocalStorage } from 'quasar'
+import { service } from 'boot/axios'
+
+service.interceptors.request.use(function(config) {
+    const access_token = LocalStorage.getItem('access_token');
+
+    if(!!access_token)
+      config.headers.Authorization = access_token
+
+    return config;
+}, err => Promise.reject(err))
 
 export default class ServiceFactory {
 
     constructor(url) { this.url = url }
 
-    headers(token) { service.defaults.headers.common['Authorization'] = token }
-   
     getAll(q) {
         return service.get( this.url, { params: q } )
             .then(  (response)  => Promise.resolve(response) )

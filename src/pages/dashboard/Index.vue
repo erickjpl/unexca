@@ -15,6 +15,6 @@
     name: 'DahboardIndex',
     computed: {
       ...mapGetters('auth', ['user'])
-    },
+    }
   }
 </script>

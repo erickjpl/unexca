@@ -6,7 +6,7 @@
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
           </q-avatar>
-          Title
+          STA
         </q-toolbar-title>
 
         <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
@@ -100,6 +100,16 @@
     </q-drawer>
 
     <q-page-container>
+      <q-banner class="bg-warning text-white" v-if="!user.email_verified_at">
+        <template v-slot:avatar>
+          <q-icon name="mark_email_unread" color="white" />
+        </template>
+        {{ $t('message.verify_email') }}
+        <template v-slot:action>
+          <q-btn flat color="dark" :label="$t('button.resend')" /> 
+        </template>
+      </q-banner>
+
       <router-view />
 
       <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
@@ -113,7 +123,7 @@
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
           </q-avatar>
-          Title
+          STA
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
@@ -121,7 +131,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapMutations } from 'vuex'
+  import { mapGetters, mapMutations, mapActions } from 'vuex'
 
   const menuList = [
     {
@@ -184,7 +194,7 @@
       }
     },
     computed: {
-      ...mapGetters('auth', ['user', 'check']),
+      ...mapGetters('auth', ['user', 'check', 'verifyParam']),
       ...mapGetters(['currentLanguage', 'languages'])
     },
     watch: {
@@ -196,8 +206,10 @@
     },
     created() {
       this.lang = this.currentLanguage
+      this.verifyEmail()
     },
     methods: {
+      ...mapActions('auth', ['verify']),
       ...mapMutations(['SET_LANGUAGE']),
       drawerClick (e) {
         // if in "mini" state and user
@@ -209,6 +221,28 @@
           // we need to stop further propagation as this click is
           // intended for switching drawer to "normal" mode only
           e.stopPropagation()
+        }
+      },
+      verifyEmail() {
+        if ( ! this.user.email_verified_at && !! this.verifyParam ) {
+          this.verify(this.verifyParam)
+            .catch((error) => {
+              if (error.response) {
+                if (error.response.status === 401) {
+                  this.$q.dialog({
+                    message: this.$t('message.error.error_401')
+                  })
+                } else if (error.response.status === 403) {
+                  this.$q.dialog({
+                    message: this.$t('message.error.error_403')
+                  })
+                } else if (error.response.status === 422) {
+                  // errores laravel recorrer y pintar en input
+                } else {
+                  console.error(error)
+                }
+              }
+            })
         }
       }
     }
