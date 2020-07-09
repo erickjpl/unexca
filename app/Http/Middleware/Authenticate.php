@@ -14,6 +14,15 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
+        if ( $request->route()->uri == 'api/auth/email/verify/{id}/{hash}' ) {
+            $id = $request->route('id');
+            $hash = $request->route('hash');
+            $expires = $request->expires;
+            $signature = $request->signature;
+
+            return env('APP_URL_CLI').'/auth/login/verify/'.$id.'/'.$hash.'?expires='.$expires.'&signature='.$signature;
+        }
+
         if (! $request->expectsJson()) {
             return route('login');
         }

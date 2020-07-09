@@ -19,7 +19,7 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'middleware' => 'thrott
 	Route::get('login/{service}', 'SocialLoginController@redirect');
     Route::get('login/{service}/callback', 'SocialLoginController@callback');
     
-	Route::post('logout', 'LoginController@logout')->name('logout');
+	Route::post('logout', 'LoginController@logout')->name('logout')->middleware('jwt.verify');
 
 	Route::post('register', 'RegisterController@register')->name('register');
 
@@ -27,11 +27,11 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'middleware' => 'thrott
 	Route::post('password/reset', 'ResetPasswordController@reset')->name('password.update');
 	Route::post('password/confirm', 'ConfirmPasswordController@confirm');
 
-	Route::get('email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify');
+	Route::get('email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify')->middleware('jwt.verify');
 	Route::post('email/resend', 'VerificationController@resend')->name('verification.resend');
 });
 
-Route::group(['middleware' => ['jwt.verify']], function() {
+Route::group(['middleware' => ['verified','jwt.verify']], function() {
 	Route::group(['namespace' => 'Profile', 'prefix' => 'profile'], function () {
 		Route::put('user/{user}', 'ProfileController@user')->name('profile.update.user');
 		Route::put('detail/{user}', 'ProfileController@detail')->name('profile.update.detail');

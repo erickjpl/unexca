@@ -19,7 +19,14 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
     
-    protected $dates = ['deleted_at', 'email_verified_at'];
+    protected $dates = ['deleted_at'];
+
+    /**
+     * The storage format of the model's date columns.
+     *
+     * @var string
+     */
+    protected $dateFormat = 'Y-m-d';
 
     /**
      * The table associated with the model.
@@ -50,7 +57,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public $fillable = [
         'nickname',
         'email',
-        'password'
+        'password',
     ];
 
     /**
@@ -62,7 +69,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'nickname' => 'string',
         'email' => 'string',
         'password' => 'string',
-        'email_verified_at' => 'date:Y-m-d H:i:s',
+        'email_verified_at' => 'date:Y-m-d',
     ];
 
     /**
@@ -73,6 +80,16 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new \App\Notifications\VerifyEmail);
+    }
 
     /**
      * Get the route key for the model.

@@ -21,6 +21,7 @@ class UserResource extends JsonResource
                 'id' => $this->resource->id,
                 'nickname' => $this->resource->nickname,
                 'email' => $this->resource->email,
+                'email_verified_at' => $this->resource->email_verified_at->format('Y-m-d')
             ],
             'meta' => [
                 'description' => 'Detalles de la cuenta del usuario'

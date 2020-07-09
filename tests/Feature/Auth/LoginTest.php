@@ -36,6 +36,7 @@ class LoginTest extends TestCase
                         'id' => $user->id,
                         'nickname' => $user->nickname,
                         'email' => $user->email,
+                        'email_verified_at' => $user->email_verified_at->format('Y-m-d'),
                         'token' => $token
                     ],
                     'relationships' => [
@@ -122,6 +123,7 @@ class LoginTest extends TestCase
                         'id' => $user->id,
                         'nickname' => $user->nickname,
                         'email' => $user->email,
+                        'email_verified_at' => $user->email_verified_at->format('Y-m-d'),
                         'token' => $token
                     ],
                     'relationships' => [
@@ -201,6 +203,7 @@ class LoginTest extends TestCase
                         'id' => $user->id,
                         'nickname' => $user->nickname,
                         'email' => $user->email,
+                        'email_verified_at' => $user->email_verified_at->format('Y-m-d'),
                         'token' => $token
                     ],
                     'relationships' => [

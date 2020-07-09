@@ -19,6 +19,7 @@ class LoginResource extends JsonResource
      */
     public function toArray($request)
     {
+        $verified = $this->resource->email_verified_at;
         return [
             'id' => (string) $this->resource->getRouteKey(),
             'type' => \App\Models\Profile\User::class,
@@ -26,6 +27,7 @@ class LoginResource extends JsonResource
                 'id' => $this->resource->id,
                 'nickname' => $this->resource->nickname,
                 'email' => $this->resource->email,
+                'email_verified_at' => !!$verified ? $verified->format('Y-m-d') : null,
                 'token' => $this->resource->token
             ],
             'relationships' => [

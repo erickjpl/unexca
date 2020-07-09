@@ -21,6 +21,7 @@ class RegisterResource extends JsonResource
                 'id' => $this->resource->id,
                 'nickname' => $this->resource->nickname,
                 'email' => $this->resource->email,
+                'email_verified_at' => null,
                 'token' => $this->resource->token
             ],
             'meta' => [

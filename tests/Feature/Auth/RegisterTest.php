@@ -39,6 +39,7 @@ class RegisterTest extends TestCase
                         'id' => $user->id,
                         'nickname' => $user->nickname,
                         'email' => $user->email,
+                        'email_verified_at' => null,
                         'token' => $token
                     ],
                     'meta' => [
