@@ -28,7 +28,8 @@ class LoginResource extends JsonResource
                 'nickname' => $this->resource->nickname,
                 'email' => $this->resource->email,
                 'email_verified_at' => !!$verified ? $verified->format('Y-m-d') : null,
-                'token' => $this->resource->token
+                'token' => $this->resource->token,
+                'expires_in' => $this->resource->expires_in
             ],
             'relationships' => [
                 'image' => [

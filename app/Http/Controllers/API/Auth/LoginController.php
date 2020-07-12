@@ -120,6 +120,11 @@ class LoginController extends Controller
 
         $user = $request->user();
         $user->token = "Bearer {$token}";
+        $user->expires_in = \Carbon\Carbon::now()->addMinutes($this->auth->factory()->getTTL())->timestamp;
+        /*$user->expires_in = array(
+            'a' => \Carbon\Carbon::now()->addMinutes($this->auth->factory()->getTTL())->timestamp,
+            'b' => \Carbon\Carbon::now()->timestamp
+        );*/
 
         return (LoginResource::make($user))->response()->header('Authorization', "Bearer {$token}");
     }

@@ -22,7 +22,8 @@ class RegisterResource extends JsonResource
                 'nickname' => $this->resource->nickname,
                 'email' => $this->resource->email,
                 'email_verified_at' => null,
-                'token' => $this->resource->token
+                'token' => $this->resource->token,
+                'expires_in' => $this->resource->expires_in
             ],
             'meta' => [
                 'description' => 'Registro de nuevos usuarios'
