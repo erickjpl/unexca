@@ -77,7 +77,7 @@
         so that user can switch back
         to mini-mode
       -->
-      <div class="q-mini-drawer-hide absolute" style="top: 160px; right: -17px">
+      <div class="q-mini-drawer-hide absolute" style="top: 160px; right: -17px" v-if="!! user">
         <q-btn
           dense
           round
@@ -99,7 +99,7 @@
       </q-img>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container v-if="!! user">
       <q-banner class="bg-warning text-white" v-if="!user.email_verified_at">
         <template v-slot:avatar>
           <q-icon name="mark_email_unread" color="white" />
@@ -127,10 +127,13 @@
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
+
+    <refresh-token :seg='seg' :show.sync='show' @isLogout="isLogout" v-if='show' />
   </q-layout>
 </template>
 
 <script>
+  import RefreshToken from 'components/general/RefreshToken'
   import { mapGetters, mapMutations, mapActions } from 'vuex'
 
   const menuList = [
@@ -178,9 +181,15 @@
 
   export default {
     name: 'DashboardLayout',
+    components: {
+      RefreshToken
+    },
     data () {
       return {
         lang: '',
+        show: false,
+        seg: null,
+        session: null,
         drawer: false,
         miniState: true,
         menuList,
@@ -207,9 +216,10 @@
     created() {
       this.lang = this.currentLanguage
       this.verifyEmail()
+      this.validarSession()
     },
     methods: {
-      ...mapActions('auth', ['verify']),
+      ...mapActions('auth', ['verify', 'logout']),
       ...mapMutations(['SET_LANGUAGE']),
       drawerClick (e) {
         // if in "mini" state and user
@@ -244,6 +254,28 @@
               }
             })
         }
+      },
+      validarSession() {
+        this.session = setInterval(() => {
+          let time = new Date( Date.now() ).getTime({timeZone: "America/Caracas"}) / 1000
+          let expires_in = new Date( this.user.expires_in - 5 * 6 ).getTime({timeZone: "America/Caracas"})
+          
+
+          if(time >= expires_in) { 
+            if (time >= this.user.expires_in) {
+              this.isLogout()
+              clearInterval(this.session) 
+            }
+
+            this.show = true
+            this.seg = Math.floor(this.user.expires_in - time)
+          }
+        }, 1000); 
+
+      },
+      isLogout() {
+        clearInterval(this.session) 
+        this.logout().then(() => this.$router.push({ name: 'index' }))
       }
     }
   }

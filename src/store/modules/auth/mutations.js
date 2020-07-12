@@ -7,6 +7,7 @@ export function SET_USER (state, data) {
       email: data.attributes.email,
       email_verified_at: data.attributes.email_verified_at,
       nickname: data.attributes.nickname,
+      expires_in: data.attributes.expires_in,
       roles: ['admin']
     }
   } else {
