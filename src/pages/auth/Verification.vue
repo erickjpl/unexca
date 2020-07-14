@@ -3,9 +3,7 @@
     v-cloak
     padding
   >
-    <p>aaa
-      {{ message }}
-    </p>
+    <p>{{ message }}</p>
   </q-page>
 </template>
 
@@ -17,7 +15,6 @@
     data () {
       return {
         message: null,
-        loading: false
       }
     },
     computed: {
@@ -29,8 +26,6 @@
     methods: {
       ...mapActions('auth', ['verify', 'logout']),
       verifyUser () {
-        this.loading = true
-
         if(!! this.$route.params.id && !! this.$route.query.expires && !! this.$route.query.signature) {
           if(this.$route.params.id == this.user.id) {
             let verifyEmail = {
@@ -41,9 +36,9 @@
             }
             
             this.verify(verifyEmail)
-              .then((response) => {
-                this.$router.push({ name: 'dashboard.index' })
-              }).catch((error) => {
+              .then((response) => this.$router.push({ name: 'dashboard.index' }))
+              .catch((error) => {
+                console.log(error)
                 if (error.response) {
                   if (error.response.status === 401) {
                     this.$q.dialog({
@@ -54,13 +49,11 @@
                       message: this.$t('message.error.error_403')
                     })
                   } else if (error.response.status === 422) {
-                    // errores laravel recorrer y pintar en input
+                      message: error.response
                   } else {
                     console.error(error)
                   }
                 }
-              }).finally(() => {
-                this.loading = false
               })
           } else {
             this.$router.push({ name: 'dashboard.index' })

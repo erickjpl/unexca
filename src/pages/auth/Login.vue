@@ -119,10 +119,6 @@ export default {
       }
     }
   },
-  created() {
-    console.log(this.$route)
-    console.log(!! this.$route.params.nextUrl)
-  },
   methods: {
     ...mapActions('auth', ['login']),
     formLogin() {

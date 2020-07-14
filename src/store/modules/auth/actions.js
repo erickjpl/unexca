@@ -22,6 +22,21 @@ export async function login ({commit}, data) {
     .catch( error => console.log("HEY",error))
 }
 
+export async function refresh ({commit}) {
+  await AuthService.refresh()
+    .then( response => {
+      commit('SET_USER', response.data.data)
+      commit('SET_TOKEN', { token: response.data.data.attributes.token})
+    })
+    .catch( error => Promise.reject(error))
+}
+
+export async function resend ({commit}) {
+  await AuthService.resend()
+    .then( response => Promise.resolve(response))
+    .catch( error => Promise.reject(error))
+}
+
 export async function updateAccount ({commit}, {id, q}) {
   await AuthService.user(id, q)
     .then( response => commit('SET_USER', response.data.data))
@@ -44,6 +59,7 @@ export async function verify ({commit}, data) {
     .then( response => commit('VERIFY', response.data.data))
     .catch( error => Promise.reject(error))
 }
+
 export async function passwordForgot ({commit}, data) {
   await AuthService.passwordForgot(data)
     .then( response => console.log(response))

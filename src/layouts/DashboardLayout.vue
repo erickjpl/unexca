@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh Lpr lff" class="shadow-2 rounded-borders">
+  <q-layout view="hHh Lpr lff" class="shadow-2 rounded-borders" v-if="!! user">
     <q-header bordered class="bg-primary text-white" height-hint="98">
       <q-toolbar>
         <q-toolbar-title>
@@ -43,14 +43,18 @@
       <template v-slot:mini>
         <q-scroll-area class="fit mini-slot cursor-pointer" :bar-style="barStyle">
           <q-list padding>
-          <template v-for="(menuItem, index) in menuList">
-            <q-item clickable v-ripple :key="index" v-if="check(menuItem.role)">
-              <q-icon :name="menuItem.icon" :color="menuItem.color" class="mini-icon" :key="index" />
-            </q-item>
+            <template v-for="(menuItem, index) in menuList">
+              <q-item clickable v-ripple :key="index" v-if="check(menuItem.role)">
+                <q-icon :name="menuItem.icon" :color="menuItem.color" class="mini-icon" :key="index" />
+              </q-item>
 
-            <q-separator v-if="menuItem.separator" />
-          </template>
-        </q-list>
+              <q-separator v-if="menuItem.separator" />
+            </template>
+
+            <q-item clickable v-ripple v-if="check()">
+              <q-icon name="exit_to_app" color="pink" class="mini-icon" />
+            </q-item>
+          </q-list>
         </q-scroll-area>
       </template>
 
@@ -69,6 +73,16 @@
 
            <q-separator v-if="menuItem.separator" />
           </template>
+
+          <q-item clickable exact v-ripple v-if="check()" @click="closedSession">
+            <q-item-section avatar>
+              <q-icon name="exit_to_app" color="pink" />
+            </q-item-section>
+
+            <q-item-section>
+              {{ $t('menu.dashboard.logout') }}
+            </q-item-section>
+          </q-item>
         </q-list>
       </q-scroll-area>
 
@@ -106,7 +120,8 @@
         </template>
         {{ $t('message.verify_email') }}
         <template v-slot:action>
-          <q-btn flat color="dark" :label="$t('button.resend')" /> 
+          {{ $t('message.resend_email') }}
+          <q-btn flat color="dark" :label="$t('button.resend')" @click="resendEmail" /> 
         </template>
       </q-banner>
 
@@ -169,14 +184,14 @@
       role: '',
       separator: true
     },
-    {
+    /*{
       icon: 'exit_to_app',
       color: 'pink',
       label: 'menu.dashboard.logout',
       path: 'logout',
       role: '',
       separator: false
-    }
+    }*/
   ]
 
   export default {
@@ -203,7 +218,7 @@
       }
     },
     computed: {
-      ...mapGetters('auth', ['user', 'check', 'verifyParam']),
+      ...mapGetters('auth', ['user', 'check']),
       ...mapGetters(['currentLanguage', 'languages'])
     },
     watch: {
@@ -215,11 +230,10 @@
     },
     created() {
       this.lang = this.currentLanguage
-      this.verifyEmail()
       this.validarSession()
     },
     methods: {
-      ...mapActions('auth', ['verify', 'logout']),
+      ...mapActions('auth', ['verify', 'refresh', 'logout', 'resend']),
       ...mapMutations(['SET_LANGUAGE']),
       drawerClick (e) {
         // if in "mini" state and user
@@ -233,49 +247,41 @@
           e.stopPropagation()
         }
       },
-      verifyEmail() {
-        if ( ! this.user.email_verified_at && !! this.verifyParam ) {
-          this.verify(this.verifyParam)
-            .catch((error) => {
-              if (error.response) {
-                if (error.response.status === 401) {
-                  this.$q.dialog({
-                    message: this.$t('message.error.error_401')
-                  })
-                } else if (error.response.status === 403) {
-                  this.$q.dialog({
-                    message: this.$t('message.error.error_403')
-                  })
-                } else if (error.response.status === 422) {
-                  // errores laravel recorrer y pintar en input
-                } else {
-                  console.error(error)
-                }
-              }
-            })
-        }
+      resendEmail() {
+        this.resend().then((r) => console.log(r)).catch((e) => console.log(e))
       },
       validarSession() {
         this.session = setInterval(() => {
           let time = new Date( Date.now() ).getTime({timeZone: "America/Caracas"}) / 1000
           let expires_in = new Date( this.user.expires_in - 5 * 6 ).getTime({timeZone: "America/Caracas"})
           
-
           if(time >= expires_in) { 
             if (time >= this.user.expires_in) {
-              this.isLogout()
-              clearInterval(this.session) 
+              this.isLogout(true)
             }
 
             this.show = true
             this.seg = Math.floor(this.user.expires_in - time)
           }
         }, 1000); 
-
       },
-      isLogout() {
+      isLogout(val) {
         clearInterval(this.session) 
-        this.logout().then(() => this.$router.push({ name: 'index' }))
+        if (val) {
+          this.logout().then(() => this.$router.push({ name: 'index' }))
+        } else {
+          this.refresh().then(() => this.validarSession())
+        }
+      },
+      closedSession() {
+        this.$q.dialog({
+          title: this.$i18n.t('dialog.logout.title'),
+          message: this.$i18n.t('dialog.logout.message'),
+          ok: this.$i18n.t('button.continue'),
+          cancel: this.$i18n.t('button.cancel')
+        }).onOk(() => {
+          this.isLogout(true)
+        }).onCancel(() => {})
       }
     }
   }

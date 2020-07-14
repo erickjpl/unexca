@@ -14,7 +14,7 @@
           <strong>{{ seg }}</strong> segundos...
         </div>
         <div align="right">
-          <q-btn flat label="OK" @click="$emit('update:show', false)" />
+          <q-btn flat label="OK" @click="refresh" />
           <q-btn flat label="Cancel" @click="$emit('update:show', false)" />
         </div>
       </q-card-actions>
@@ -38,11 +38,14 @@
       this.session()
     },
     methods: {
-      session() {
-        console.log("SEG", this.seg)        
+      session() {       
         if (this.seg == 1) {
-          this.$emit('isLogout')
+          this.$emit('isLogout',true)
         }
+      },
+      refresh() {       
+        this.$emit('update:show', false)
+        this.$emit('isLogout', false)
       }
     }
   }

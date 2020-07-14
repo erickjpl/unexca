@@ -4,6 +4,8 @@ import { service } from 'boot/axios'
 const FETCH_USER = '/profile/user'
 const REGISTER_USER = '/auth/register'
 const LOGIN_USER = '/auth/login'
+const REFRESH_TOKEN = '/auth/refresh'
+const RESEND_EMAIL = '/auth/email/resend'
 const LOGOUT_USER = '/auth/logout'
 const VERIFICATION_USER = '/auth/email/verify'
 const PASSWORD_FORGOT_USER = '/auth/password/forgot'
@@ -35,6 +37,12 @@ export default class ServiceAuthFactory
         return p
     }
 
+    refresh() {
+        return service.post(REFRESH_TOKEN)
+            .then(  (response)  => Promise.resolve(response) )
+            .catch( (error)     => Promise.reject(error.response) )
+    }
+
     logout() {
         const p = new Promise(function (resolve, reject) { 
             return service.post(LOGOUT_USER)
@@ -55,6 +63,12 @@ export default class ServiceAuthFactory
 
     verify(data) {
         return service.get(`${VERIFICATION_USER}/${data.id}/${data.hash}?expires=${data.expires}&signature=${data.signature}`)
+            .then(  (response)  => Promise.resolve(response) )
+            .catch( (error)     => Promise.reject(error.response) )
+    }
+
+    resend(data) {
+        return service.post(RESEND_EMAIL)
             .then(  (response)  => Promise.resolve(response) )
             .catch( (error)     => Promise.reject(error.response) )
     }

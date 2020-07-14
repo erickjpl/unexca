@@ -91,7 +91,7 @@ export default {
 		close: 'Close',
 		login: 'Login',
 		register: 'Register',
-		resend: 'Resend',
+		resend: 'Click here to request another',
 	},
 
 	link: {
@@ -132,7 +132,8 @@ export default {
 			error_401: 'Unauthorized',
 			error_403: 'Forbidden',
 		},
-		verify_email: 'Please check your email ..! So we can ensure communication.'
+		verify_email: 'Please check your email ..! So we can ensure communication.',
+		resend_email: 'If you did not receive the email.'
 	},
 
 	validation: en.messages
