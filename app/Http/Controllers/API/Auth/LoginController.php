@@ -46,7 +46,6 @@ class LoginController extends Controller
     public function __construct(JWTAuth $auth)
     {
         $this->auth = $auth;
-        #$this->middleware('guest')->except('logout');
     }
 
     /**
@@ -121,10 +120,6 @@ class LoginController extends Controller
         $user = $request->user();
         $user->token = "Bearer {$token}";
         $user->expires_in = \Carbon\Carbon::now()->addMinutes($this->auth->factory()->getTTL())->timestamp;
-        /*$user->expires_in = array(
-            'a' => \Carbon\Carbon::now()->addMinutes($this->auth->factory()->getTTL())->timestamp,
-            'b' => \Carbon\Carbon::now()->timestamp
-        );*/
 
         return (LoginResource::make($user))->response()->header('Authorization', "Bearer {$token}");
     }
@@ -153,5 +148,19 @@ class LoginController extends Controller
         $this->auth->invalidate();
 
         return response()->json([ 'success' => true ]);
+    }
+
+    /**
+     * Refresh token.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function refresh(Request $request)
+    {
+        if ($token = $this->auth->refresh()) 
+            return $this->sendLoginResponse($token, $request);
+        
+        return response()->json(['error' => 'refresh_token_error'], 401);
     }
 }

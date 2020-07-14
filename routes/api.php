@@ -23,12 +23,14 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'middleware' => 'thrott
 
 	Route::post('register', 'RegisterController@register')->name('register');
 
+	Route::post('refresh', 'LoginController@refresh')->name('refresh')->middleware('jwt.verify');
+
 	Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 	Route::post('password/reset', 'ResetPasswordController@reset')->name('password.update');
 	Route::post('password/confirm', 'ConfirmPasswordController@confirm');
 
+	Route::post('email/resend', 'VerificationController@resend')->name('verification.resend')->middleware('jwt.verify');
 	Route::get('email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify')->middleware('jwt.verify');
-	Route::post('email/resend', 'VerificationController@resend')->name('verification.resend');
 });
 
 Route::group(['middleware' => ['verified','jwt.verify']], function() {
